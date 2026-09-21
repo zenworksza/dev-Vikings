@@ -15,6 +15,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? $brand->site_name }}</title>
+    @isset($description)
+        @if (filled($description))
+            <meta name="description" content="{{ $description }}">
+            <meta property="og:description" content="{{ $description }}">
+        @endif
+    @endisset
+    <meta property="og:title" content="{{ $title ?? $brand->site_name }}">
+    @isset($image)
+        @if (filled($image))
+            <meta property="og:image" content="{{ $image }}">
+        @endif
+    @endisset
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 

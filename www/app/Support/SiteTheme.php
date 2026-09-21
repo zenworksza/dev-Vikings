@@ -27,11 +27,26 @@ class SiteTheme
      * Absolute URL to $path on the *other* site, for cross-domain links
      * (e.g. the marketing site's "Apply as a franchisee" button pointing at
      * the portal). Falls back to a same-app route/path when the other
-     * host isn't configured (local dev).
+     * host isn't configured (local dev). Depends on the current request —
+     * only usable inside a web request.
      */
     public static function otherSiteUrl(string $path): string
     {
         $host = static::isPortal() ? config('app.public_host') : config('app.portal_host');
+
+        return $host ? 'https://'.$host.$path : $path;
+    }
+
+    /**
+     * Absolute URL to $path on the franchise portal, unconditionally —
+     * doesn't depend on the current request, so it's safe to call from a
+     * seeder/console context (e.g. baking a CTA URL into seeded CMS
+     * content). Falls back to a same-app path when the portal host isn't
+     * configured (local dev).
+     */
+    public static function portalUrl(string $path): string
+    {
+        $host = config('app.portal_host');
 
         return $host ? 'https://'.$host.$path : $path;
     }

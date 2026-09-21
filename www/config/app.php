@@ -123,4 +123,23 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Site hostnames
+    |--------------------------------------------------------------------------
+    |
+    | One Laravel app, two front-ends on two subdomains: the public
+    | marketing site (Ember brand) and the franchise portal — investor
+    | signup/login plus the Filament /admin and /portal panels (Hearthwood
+    | brand). Layouts pick their theme by comparing the current request's
+    | host against `portal_host`. Left null in local dev (no real
+    | subdomains there), so everything just renders the public theme, as
+    | before.
+    |
+    */
+
+    'public_host' => env('PUBLIC_SITE_HOST'),
+
+    'portal_host' => env('FRANCHISE_PORTAL_HOST'),
+
 ];

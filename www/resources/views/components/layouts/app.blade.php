@@ -1,5 +1,13 @@
 @php
+    // app.blade.php only ever serves the public marketing site — always the
+    // Ember theme, always unauthenticated (no shared session with the
+    // franchise portal's separate subdomain, so no @auth chrome here —
+    // login/logout only ever happen on the portal). See Plan.md's brand
+    // palette decision and App\Support\SiteTheme.
     $brand = app(\App\Settings\BrandSettings::class);
+    $prefix = 'public';
+    $portalLoginUrl = \App\Support\SiteTheme::otherSiteUrl('/login');
+    $portalRegisterUrl = \App\Support\SiteTheme::otherSiteUrl('/register');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -12,15 +20,15 @@
 
     <style>
         :root {
-            --brand-surface: {{ $brand->public_color_surface }};
-            --brand-surface-alt: {{ $brand->public_color_surface_alt }};
-            --brand-ink: {{ $brand->public_color_ink }};
-            --brand-ink-muted: {{ $brand->public_color_ink_muted }};
-            --brand-accent: {{ $brand->public_color_accent }};
-            --brand-rule: {{ $brand->public_color_rule }};
-            --brand-radius: {{ $brand->public_radius }};
-            --brand-heading-font: {{ $brand->public_heading_font }};
-            --brand-body-font: {{ $brand->public_body_font }};
+            --brand-surface: {{ $brand->{$prefix.'_color_surface'} }};
+            --brand-surface-alt: {{ $brand->{$prefix.'_color_surface_alt'} }};
+            --brand-ink: {{ $brand->{$prefix.'_color_ink'} }};
+            --brand-ink-muted: {{ $brand->{$prefix.'_color_ink_muted'} }};
+            --brand-accent: {{ $brand->{$prefix.'_color_accent'} }};
+            --brand-rule: {{ $brand->{$prefix.'_color_rule'} }};
+            --brand-radius: {{ $brand->{$prefix.'_radius'} }};
+            --brand-heading-font: {{ $brand->{$prefix.'_heading_font'} }};
+            --brand-body-font: {{ $brand->{$prefix.'_body_font'} }};
         }
     </style>
 
@@ -30,26 +38,16 @@
     <header class="border-b" style="border-color: color-mix(in srgb, var(--brand-rule) 25%, transparent)">
         <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
             <a href="{{ url('/') }}" class="flex items-center gap-3">
-                <img src="{{ $brand->public_logo_path }}" alt="{{ $brand->site_name }}" class="h-8 w-auto">
+                <img src="{{ $brand->{$prefix.'_logo_path'} }}" alt="{{ $brand->site_name }}" class="h-8 w-auto">
             </a>
 
             <nav class="flex items-center gap-6 text-sm font-medium" style="color: var(--brand-ink-muted)">
-                @auth
-                    @if (auth()->user()->hasRole('platform_admin'))
-                        <a href="{{ url('/admin') }}" class="hover:opacity-80">Admin</a>
-                    @endif
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="hover:opacity-80">Log out</button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="hover:opacity-80">Log in</a>
-                    <a href="{{ route('register') }}"
-                        class="px-4 py-2 text-sm font-medium shadow-sm transition hover:opacity-90"
-                        style="background-color: var(--brand-accent); color: var(--brand-ink); border-radius: var(--brand-radius)">
-                        Apply as a franchisee
-                    </a>
-                @endauth
+                <a href="{{ $portalLoginUrl }}" class="hover:opacity-80">Franchisee login</a>
+                <a href="{{ $portalRegisterUrl }}"
+                    class="px-4 py-2 text-sm font-medium shadow-sm transition hover:opacity-90"
+                    style="background-color: var(--brand-accent); color: var(--brand-ink); border-radius: var(--brand-radius)">
+                    Apply as a franchisee
+                </a>
             </nav>
         </div>
     </header>

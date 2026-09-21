@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikings — brand concepts</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Cormorant+Garamond:ital,wght@1,500&family=Bitter:wght@600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="brand.css">
+<style>
+  body{background:var(--navy);color:var(--bone);}
+  .picker{
+    max-width:960px;margin:0 auto;padding:clamp(48px,8vw,88px) clamp(20px,5vw,48px) 80px;
+  }
+  .picker h1{
+    font-family:'Inter',sans-serif;font-size:clamp(26px,4vw,38px);margin-bottom:10px;
+  }
+  .picker > p{color:var(--mist);max-width:56ch;line-height:1.6;margin:0 0 40px;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+  .card{
+    display:block;text-decoration:none;color:inherit;
+    border:1px solid rgba(241,237,228,.14);border-radius:6px;overflow:hidden;
+    background:rgba(241,237,228,.04);transition:border-color .15s ease,transform .15s ease;
+  }
+  .card:hover{border-color:var(--red);transform:translateY(-2px);}
+  .card__swatch{height:96px;display:flex;align-items:center;justify-content:center;}
+  .card__swatch img{height:40px;width:auto;}
+  .card__body{padding:18px 20px 22px;}
+  .card__name{font-size:18px;font-weight:600;margin-bottom:4px;}
+  .card__meta{font-size:13px;color:var(--grey);}
+  .card--ember .card__swatch{background:#1B2A38;}
+  .card--ember .card__name{font-family:'Cinzel',serif;}
+  .card--glacier .card__swatch{background:linear-gradient(180deg,#46647A,#4A6670);}
+  .card--glacier .card__name{font-family:'Cormorant Garamond',serif;font-style:italic;}
+  .card--hearthwood .card__swatch{background:#E9E4D8;}
+  .card--hearthwood .card__name{font-family:'Bitter',serif;}
+</style>
+</head>
+<body>
+
+<div class="compare-bar">
+  <div class="compare-bar__label"><b>Vikings Family Restaurant</b> — brand concept preview</div>
+  <div class="compare-bar__links">
+    <a href="index.html" class="current">All concepts</a>
+    <a href="ember.html">Ember</a>
+    <a href="glacier.html">Glacier</a>
+    <a href="hearthwood.html">Hearthwood</a>
+  </div>
+</div>
+
+<div class="picker">
+  <h1>Three concepts, one palette</h1>
+  <p>Same fjord/hearth palette, same menu and copy, three different logo + typeface pairings. Open each in full to compare before we commit one to <code>BrandSettings</code>.</p>
+  <div class="cards">
+    <a class="card card--ember" href="ember.html">
+      <div class="card__swatch"><img src="logo-gold.png" alt="Gold Vikings wordmark"></div>
+      <div class="card__body">
+        <div class="card__name">Ember</div>
+        <div class="card__meta">Cinzel / Inter — gold mark, dark ground, sharp edges</div>
+      </div>
+    </a>
+    <a class="card card--glacier" href="glacier.html">
+      <div class="card__swatch"><img src="logo-silver.png" alt="Silver Vikings wordmark"></div>
+      <div class="card__body">
+        <div class="card__name">Glacier</div>
+        <div class="card__meta">Cormorant Garamond / Inter — silver mark, cool &amp; quiet</div>
+      </div>
+    </a>
+    <a class="card card--hearthwood" href="hearthwood.html">
+      <div class="card__swatch"><img src="logo-black.png" alt="Black Vikings wordmark"></div>
+      <div class="card__body">
+        <div class="card__name">Hearthwood</div>
+        <div class="card__meta">Bitter / Nunito Sans — black mark, warm &amp; rounded</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

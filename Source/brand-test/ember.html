@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikings — Ember concept</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Runic&display=swap">
+<link rel="stylesheet" href="brand.css">
+</head>
+<body class="ember">
+
+<div class="compare-bar">
+  <div class="compare-bar__label"><b>Vikings Family Restaurant</b> — brand concept preview</div>
+  <div class="compare-bar__links">
+    <a href="index.html">All concepts</a>
+    <a href="ember.html" class="current">Ember</a>
+    <a href="glacier.html">Glacier</a>
+    <a href="hearthwood.html">Hearthwood</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="container subnav">
+    <span class="subnav__word">Vikings</span>
+    <ul class="subnav__links">
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#visit">Visit</a></li>
+    </ul>
+  </div>
+  <div class="container hero__inner">
+    <div class="hero__brand">
+      <img class="hero__logo" src="logo-gold.png" alt="Vikings wordmark, gold, with a flaming trident over the I">
+      <span class="rune-wordmark" tabindex="0" role="img" aria-label="Vikings Family Restaurant">
+        <span class="rune-wordmark__runes" aria-hidden="true">ᚢᛁᚲᛁᛜᛊ ᚠᚨᛗᛁᛚᛁ ᚱᛖᛊᛏᚨᚢᚱᚨᚾᛏ</span>
+        <span class="rune-wordmark__latin" aria-hidden="true">Vikings Family Restaurant</span>
+      </span>
+    </div>
+    <p class="hero__eyebrow">Fjordside Hearth Dining</p>
+    <h1 class="hero__headline">A table kept warm since the first fire was lit</h1>
+    <p class="hero__sub">Smoke, salt and slow-roasted fire — a Nordic-coastal kitchen for family gatherings, long tables and longer evenings.</p>
+    <div class="hero__ctas">
+      <a class="btn btn--primary" href="#visit">Reserve a Table</a>
+      <a class="btn btn--ghost" href="#menu">View the Menu</a>
+    </div>
+  </div>
+</div>
+
+<div class="hull-rule"></div>
+
+<div class="story" id="story">
+  <div class="container story__grid">
+    <div>
+      <p class="eyebrow">Our Story</p>
+      <h2>Built around the hearth, not the herd</h2>
+      <p>Vikings began as a single wood-fired hearth on the harbor — the kind of fire you cook a whole shoulder of lamb over, slowly, while the tide comes in. Three generations later, that hearth is still the center of the room.</p>
+      <p>Every board that leaves our kitchen is built for sharing: smoked, cured or roasted the way coastal families have fed each other for a thousand winters, plated for a Tuesday as much as a celebration.</p>
+    </div>
+    <svg class="fjord-art" viewBox="0 0 480 340" role="img" aria-label="Illustration of a fjord at dusk">
+      <rect width="480" height="340" fill="#0f1c27"/>
+      <circle cx="360" cy="80" r="46" fill="#9B2226" opacity=".85"/>
+      <polygon points="0,340 0,210 90,120 170,210 240,150 330,220 400,170 480,230 480,340" fill="#1B2A38"/>
+      <polygon points="0,340 0,255 110,190 210,255 300,210 400,260 480,235 480,340" fill="#243c4f"/>
+      <polygon points="0,340 0,300 140,270 260,305 380,280 480,300 480,340" fill="#46647A"/>
+    </svg>
+  </div>
+</div>
+
+<div class="menu" id="menu">
+  <div class="container">
+    <div class="menu__head">
+      <h2>From the Hearth</h2>
+      <p class="menu__note">A working sample of the seasonal board — prices shown for testing layout only.</p>
+    </div>
+    <div class="menu__grid">
+      <article class="dish"><div class="dish__row"><span class="dish__name">Fjord-Smoked Salmon Board</span><span class="dish__price">$18</span></div><p class="dish__desc">House-cured salmon, rye crisp, dill crème, pickled shallot.</p></article>
+      <article class="dish"><div class="dish__row"><span class="dish__name">Hearth-Roasted Lamb Shank</span><span class="dish__price">$34</span></div><p class="dish__desc">Root vegetables, juniper jus, charred barley.</p></article>
+      <article class="dish"><div class="dish__row"><span class="dish__name">Birch-Smoked Trout</span><span class="dish__price">$28</span></div><p class="dish__desc">Charred leek, brown butter, toasted hazelnut.</p></article>
+      <article class="dish"><div class="dish__row"><span class="dish__name">Longship Sharing Platter</span><span class="dish__price">$46</span></div><p class="dish__desc">Smoked meats, cheeses, pickles, warm flatbread — for the table.</p></article>
+      <article class="dish"><div class="dish__row"><span class="dish__name">Brown Butter Cardamom Cake</span><span class="dish__price">$12</span></div><p class="dish__desc">Burnt honey, crème fraîche.</p></article>
+      <article class="dish"><div class="dish__row"><span class="dish__name">Spiced Berry Mead Flight</span><span class="dish__price">$16</span></div><p class="dish__desc">Three pours, tasting notes at the table.</p></article>
+    </div>
+  </div>
+</div>
+
+<div class="visit" id="visit">
+  <div class="container visit__grid">
+    <div>
+      <h3>Hours</h3>
+      <dl>
+        <dt>Tue–Thu</dt><dd>12:00–21:00</dd>
+        <dt>Fri–Sat</dt><dd>12:00–22:00</dd>
+        <dt>Sun</dt><dd>12:00–20:00</dd>
+        <dt>Mon</dt><dd>Closed</dd>
+      </dl>
+    </div>
+    <div>
+      <h3>Visit</h3>
+      <address>Harborview Quay, Unit 4<br>hello@vikingsfamily.test · (555) 010-0142</address>
+      <p>Reservations recommended Friday and Saturday.</p>
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <span><strong>VIKINGS</strong> family restaurant</span>
+  <span>Concept: Ember — Cinzel / Inter, gold mark</span>
+</div>
+
+<script src="brand.js"></script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+/* Vikings Family Restaurant — brand concept test pages
+   Fixed client palette; do not adjust hex values without sign-off. */
+
+:root{
+  --navy:#1B2A38;
+  --slate:#46647A;
+  --mist:#C9D8DD;
+  --bone:#F1EDE4;
+  --grey:#8A97A0;
+  --parchment:#E9E4D8;
+  --red:#9B2226;
+  --steel:#4A6670;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Inter',-apple-system,'Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  /* per-concept token defaults (overridden by body.ember / .glacier / .hearthwood below) */
+  --surface:var(--bone);
+  --surface-alt:var(--parchment);
+  --ink:var(--navy);
+  --ink-muted:var(--slate);
+  --accent:var(--red);
+  --rule:var(--grey);
+  --radius:4px;
+  --heading-font:'Inter',sans-serif;
+  --tracking:0;
+  background:var(--surface);
+  color:var(--ink);
+}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+h1,h2,h3{text-wrap:balance;margin:0;}
+.container{
+  max-width:1080px;
+  margin-inline:auto;
+  padding-inline:clamp(20px,5vw,48px);
+}
+
+/* ---------- compare bar ---------- */
+.compare-bar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:var(--navy);
+  color:var(--bone);
+  border-bottom:1px solid rgba(241,237,228,.12);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:12px clamp(16px,4vw,32px);
+  flex-wrap:wrap;
+}
+.compare-bar__label{
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--mist);
+  white-space:nowrap;
+}
+.compare-bar__label b{color:var(--bone);font-weight:600;}
+.compare-bar__links{
+  display:flex;
+  gap:6px;
+  background:rgba(241,237,228,.06);
+  padding:4px;
+  border-radius:999px;
+}
+.compare-bar__links a{
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.02em;
+  padding:8px 16px;
+  border-radius:999px;
+  text-decoration:none;
+  color:var(--mist);
+  transition:background .18s ease,color .18s ease;
+}
+.compare-bar__links a:hover{color:var(--bone);}
+.compare-bar__links a.current{background:var(--red);color:var(--bone);}
+
+.eyebrow{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:0 0 10px;
+}
+
+.hull-rule{max-width:1080px;margin:0 auto;padding-inline:clamp(20px,5vw,48px);}
+.hull-rule::before{
+  content:"";
+  display:block;
+  height:0;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  padding-top:3px;
+  opacity:.55;
+}
+
+/* ---- hero ---- */
+.hero{padding-block:clamp(56px,9vw,96px) clamp(48px,7vw,72px);}
+.hero__inner{display:grid;gap:28px;justify-items:center;text-align:center;}
+.hero__brand{display:grid;justify-items:center;gap:10px;}
+.hero__logo{width:min(450px,90vw);height:auto;}
+
+.rune-wordmark{
+  display:grid;
+  grid-template-areas:"stack";
+  place-items:center;
+  cursor:default;
+  outline:none;
+}
+.rune-wordmark span{
+  grid-area:stack;
+  transition:opacity .25s ease;
+  white-space:nowrap;
+}
+.rune-wordmark__runes{
+  font-family:'Noto Sans Runic','Inter',sans-serif;
+  font-size:19px;
+  letter-spacing:.14em;
+  color:var(--ink-muted);
+  opacity:1;
+}
+.rune-wordmark__latin{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-muted);
+  opacity:0;
+}
+.rune-wordmark:hover .rune-wordmark__runes,
+.rune-wordmark:focus-visible .rune-wordmark__runes{opacity:0;}
+.rune-wordmark:hover .rune-wordmark__latin,
+.rune-wordmark:focus-visible .rune-wordmark__latin{opacity:1;}
+.hero__eyebrow{
+  font-size:12px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--accent);
+}
+.hero__headline{
+  font-family:var(--heading-font);
+  letter-spacing:var(--tracking);
+  font-size:clamp(30px,5vw,52px);
+  line-height:1.08;
+  max-width:16ch;
+}
+.hero__sub{max-width:52ch;color:var(--ink-muted);font-size:17px;line-height:1.6;margin:0;}
+.hero__ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 26px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+  letter-spacing:.02em;border-radius:var(--radius);text-decoration:none;cursor:pointer;
+  border:1.5px solid transparent;
+  transition:transform .15s ease,background .15s ease,color .15s ease,border-color .15s ease;
+}
+.btn:hover{transform:translateY(-1px);}
+.btn--primary{background:var(--accent);color:var(--bone);}
+.btn--primary:hover{background:color-mix(in srgb, var(--accent) 85%, black);}
+.btn--ghost{background:transparent;color:var(--ink);border-color:var(--ink-muted);}
+.btn--ghost:hover{border-color:var(--ink);}
+
+/* ---- subnav ---- */
+.subnav{display:flex;align-items:center;justify-content:space-between;padding-block:18px;gap:16px;flex-wrap:wrap;}
+.subnav__word{font-family:var(--heading-font);letter-spacing:.16em;font-size:15px;text-transform:uppercase;}
+.subnav__links{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:13px;font-weight:600;letter-spacing:.03em;}
+.subnav__links a{text-decoration:none;color:var(--ink-muted);}
+.subnav__links a:hover{color:var(--accent);}
+
+/* ---- story ---- */
+.story{padding-block:clamp(56px,8vw,88px);background:var(--surface-alt);}
+.story__grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,64px);align-items:center;}
+.story h2{font-family:var(--heading-font);letter-spacing:var(--tracking);font-size:clamp(24px,3.4vw,34px);margin-bottom:16px;}
+.story p{max-width:60ch;color:var(--ink-muted);line-height:1.7;font-size:16px;margin:0 0 14px;}
+.fjord-art{width:100%;height:auto;}
+
+/* ---- menu ---- */
+.menu{padding-block:clamp(56px,8vw,88px);}
+.menu__head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:clamp(24px,4vw,36px);}
+.menu__head h2{font-family:var(--heading-font);letter-spacing:var(--tracking);font-size:clamp(24px,3.4vw,34px);}
+.menu__note{color:var(--ink-muted);font-size:14px;margin:0;max-width:32ch;}
+.menu__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+.dish{background:var(--surface-alt);border-radius:var(--radius);padding:20px 22px;display:flex;flex-direction:column;gap:8px;}
+.dish__row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+.dish__name{font-family:var(--heading-font);font-weight:600;font-size:16.5px;letter-spacing:var(--tracking);}
+.dish__price{font-variant-numeric:tabular-nums;font-weight:600;color:var(--accent);white-space:nowrap;}
+.dish__desc{color:var(--ink-muted);font-size:13.5px;line-height:1.55;margin:0;}
+
+/* ---- visit strip ---- */
+.visit{padding-block:clamp(48px,7vw,72px);background:var(--navy);color:var(--bone);}
+.visit__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,56px);}
+.visit h3{font-family:var(--heading-font);letter-spacing:.08em;text-transform:uppercase;font-size:13px;color:var(--mist);margin-bottom:14px;}
+.visit dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:14.5px;}
+.visit dt{color:var(--grey);}
+.visit dd{margin:0;font-variant-numeric:tabular-nums;}
+.visit address{font-style:normal;line-height:1.7;font-size:14.5px;color:var(--mist);}
+.visit p{color:var(--mist);font-size:14px;line-height:1.6;margin:10px 0 0;}
+
+/* ---- footer ---- */
+.page-footer{
+  padding-block:26px;background:var(--navy);color:var(--grey);
+  border-top:1px solid rgba(241,237,228,.12);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;
+}
+.page-footer strong{color:var(--mist);letter-spacing:.08em;}
+
+/* ================= EMBER — Cinzel + Inter, gold logo ================= */
+body.ember{
+  --surface:var(--navy);
+  --surface-alt:#22384a;
+  --ink:var(--bone);
+  --ink-muted:var(--mist);
+  --accent:var(--red);
+  --rule:var(--steel);
+  --radius:2px;
+  --heading-font:'Cinzel',Georgia,serif;
+  --tracking:.01em;
+}
+body.ember .hero{background:var(--navy);}
+body.ember .dish{border:1px solid rgba(201,216,221,.14);}
+body.ember .btn--ghost{color:var(--bone);}
+
+/* ================= GLACIER — Cormorant Garamond + Inter, silver logo ================= */
+body.glacier{
+  --surface:var(--mist);
+  --surface-alt:#dde7ea;
+  --ink:var(--navy);
+  --ink-muted:var(--slate);
+  --accent:var(--red);
+  --rule:var(--slate);
+  --radius:0px;
+  --heading-font:'Cormorant Garamond',Garamond,Georgia,serif;
+  --tracking:.005em;
+}
+body.glacier .hero{background:linear-gradient(180deg,var(--slate),var(--steel));color:var(--bone);}
+body.glacier .hero__sub{color:var(--mist);}
+body.glacier .hero__eyebrow{color:#f0c9ca;}
+body.glacier .hero .rune-wordmark__runes,
+body.glacier .hero .rune-wordmark__latin{color:var(--mist);}
+body.glacier .subnav__word,
+body.glacier .subnav__links a{color:var(--bone);}
+body.glacier .subnav__links a:hover{color:#f0c9ca;}
+body.glacier .hero__headline{font-style:italic;font-weight:500;}
+body.glacier .btn--ghost{color:var(--bone);border-color:rgba(241,237,228,.6);}
+body.glacier .dish{border:1px solid rgba(70,100,122,.18);}
+body.glacier .story h2 em,
+body.glacier .menu__head h2 em{font-style:italic;color:var(--accent);}
+
+/* ================= HEARTHWOOD — Bitter + Nunito Sans, black logo ================= */
+body.hearthwood{
+  --surface:var(--bone);
+  --surface-alt:var(--parchment);
+  --ink:var(--navy);
+  --ink-muted:#5d6a71;
+  --accent:var(--red);
+  --rule:var(--grey);
+  --radius:12px;
+  --heading-font:'Bitter',Georgia,serif;
+  --tracking:0em;
+  font-family:'Nunito Sans',-apple-system,'Segoe UI',sans-serif;
+}
+body.hearthwood .hero{background:var(--parchment);}
+body.hearthwood .dish{box-shadow:0 1px 0 rgba(27,42,56,.06);}
+body.hearthwood .btn--primary{border-radius:999px;}
+body.hearthwood .btn--ghost{border-radius:999px;}
+
+@media (max-width:760px){
+  .story__grid,.visit__grid{grid-template-columns:1fr;}
+  .subnav__links{order:3;width:100%;justify-content:center;}
+}

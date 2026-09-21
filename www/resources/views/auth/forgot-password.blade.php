@@ -1,6 +1,6 @@
 <x-layouts.guest title="Forgot password">
-    <h1 class="mb-2 text-lg font-semibold text-slate-900">Forgot your password?</h1>
-    <p class="mb-6 text-sm text-slate-600">Enter your email and we'll send you a password reset link.</p>
+    <h1 class="mb-2 text-lg font-semibold" style="font-family: var(--brand-heading-font)">Forgot your password?</h1>
+    <p class="mb-6 text-sm" style="color: var(--brand-ink-muted)">Enter your email and we'll send you a password reset link.</p>
 
     <x-forms.errors />
 
@@ -19,7 +19,7 @@
         <x-forms.button>Email password reset link</x-forms.button>
     </form>
 
-    <div class="mt-6 text-center text-sm">
-        <a href="{{ route('login') }}" class="text-slate-600 hover:text-slate-900">Back to log in</a>
+    <div class="mt-6 text-center text-sm" style="color: var(--brand-ink-muted)">
+        <a href="{{ route('login') }}" class="hover:opacity-80">Back to log in</a>
     </div>
 </x-layouts.guest>

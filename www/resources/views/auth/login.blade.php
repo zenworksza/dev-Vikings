@@ -1,5 +1,5 @@
 <x-layouts.guest title="Log in">
-    <h1 class="mb-6 text-lg font-semibold text-slate-900">Log in</h1>
+    <h1 class="mb-6 text-lg font-semibold" style="font-family: var(--brand-heading-font)">Log in</h1>
 
     <x-forms.errors />
 
@@ -20,16 +20,16 @@
             <x-forms.input id="password" name="password" type="password" required />
         </div>
 
-        <label class="flex items-center gap-2 text-sm text-slate-600">
-            <input type="checkbox" name="remember" class="rounded border-slate-300">
+        <label class="flex items-center gap-2 text-sm" style="color: var(--brand-ink-muted)">
+            <input type="checkbox" name="remember" class="rounded" style="border-color: var(--brand-rule)">
             Remember me
         </label>
 
         <x-forms.button>Log in</x-forms.button>
     </form>
 
-    <div class="mt-6 flex items-center justify-between text-sm">
-        <a href="{{ route('password.request') }}" class="text-slate-600 hover:text-slate-900">Forgot your password?</a>
-        <a href="{{ route('register') }}" class="text-slate-600 hover:text-slate-900">Apply as a franchisee</a>
+    <div class="mt-6 flex items-center justify-between text-sm" style="color: var(--brand-ink-muted)">
+        <a href="{{ route('password.request') }}" class="hover:opacity-80">Forgot your password?</a>
+        <a href="{{ route('register') }}" class="hover:opacity-80">Apply as a franchisee</a>
     </div>
 </x-layouts.guest>

@@ -1,1 +1,2 @@
-<input {{ $attributes->merge(['class' => 'mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-400 focus:ring-slate-400 sm:text-sm']) }}>
+<input {{ $attributes->merge(['class' => 'mt-1 block w-full shadow-sm sm:text-sm']) }}
+    style="background-color: var(--brand-surface); color: var(--brand-ink); border: 1px solid color-mix(in srgb, var(--brand-rule) 40%, transparent); border-radius: var(--brand-radius)">

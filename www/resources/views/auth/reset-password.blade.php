@@ -1,5 +1,5 @@
 <x-layouts.guest title="Reset password">
-    <h1 class="mb-6 text-lg font-semibold text-slate-900">Reset your password</h1>
+    <h1 class="mb-6 text-lg font-semibold" style="font-family: var(--brand-heading-font)">Reset your password</h1>
 
     <x-forms.errors />
 

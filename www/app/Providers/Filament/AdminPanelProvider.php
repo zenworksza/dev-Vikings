@@ -30,8 +30,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->authGuard('web')
             ->colors(fn () => [
-                'primary' => Color::hex(app(BrandSettings::class)->color_primary),
+                'primary' => Color::hex(app(BrandSettings::class)->dashboard_color_accent),
             ])
+            ->font(fn () => app(BrandSettings::class)->dashboard_body_font_family)
+            ->brandName(fn () => app(BrandSettings::class)->site_name)
+            ->brandLogo(fn () => app(BrandSettings::class)->dashboard_logo_path)
+            ->brandLogoHeight('2rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([

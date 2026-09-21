@@ -1,0 +1,28 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.production.example
+node_modules
+vendor
+# Stale dev-generated caches (package discovery, config/route/view) must not
+# ship in the image — they'd bake in dev-only providers (e.g. laravel/pail)
+# that --no-dev vendor doesn't have. Laravel regenerates these on boot.
+bootstrap/cache/*.php
+storage/framework/cache/data/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+!storage/logs/.gitignore
+tests
+.phpunit.cache
+phpunit.xml
+.idea
+.vscode
+*.log
+compose.yaml
+compose.prod.yaml

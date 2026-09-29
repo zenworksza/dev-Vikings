@@ -21,8 +21,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Where franchisee-application uploads (IDs, financials, etc.) are stored.
-    | `local` (private) in development; `documents` (S3 + SSE-KMS, see the disk
-    | below and infra/aws/) in production. Never a public disk.
+    | `local` (private) in development; `documents` (S3-compatible bucket, see
+    | the disk below and infra/storage/) in production. Never a public disk.
     |
     */
 
@@ -73,11 +73,10 @@ return [
             'report' => false,
         ],
 
-        // Franchisee-application documents (IDs, financials). Always private;
-        // every object is written with SSE-KMS when AWS_KMS_KEY_ID is set —
-        // which it must be in production (App\Services\DocumentStorage refuses
-        // to store documents on anything else there). `throw` is on so a
-        // failed upload is an error, never a silent "saved".
+        // Franchisee-application documents (IDs, financials). Always private.
+        // Objects are encrypted by the app before upload (see config/
+        // documents.php), so this bucket holds only ciphertext. `throw` is on
+        // so a failed upload is an error, never a silent "saved".
         'documents' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -87,10 +86,6 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'visibility' => 'private',
-            'options' => env('AWS_KMS_KEY_ID') ? [
-                'ServerSideEncryption' => 'aws:kms',
-                'SSEKMSKeyId' => env('AWS_KMS_KEY_ID'),
-            ] : [],
             'throw' => true,
             'report' => true,
         ],

@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['franchisee_application_id', 'type', 'disk', 'path', 'original_name', 'mime_type', 'size', 'status', 'review_note'])]
+#[Fillable(['franchisee_application_id', 'type', 'disk', 'path', 'encrypted', 'original_name', 'mime_type', 'size', 'status', 'review_note'])]
 class ApplicationDocument extends Model
 {
     protected $attributes = [
         'status' => 'pending',
+        'encrypted' => true,
     ];
 
     protected function casts(): array
@@ -19,6 +20,7 @@ class ApplicationDocument extends Model
         return [
             'status' => DocumentStatus::class,
             'size' => 'integer',
+            'encrypted' => 'boolean',
         ];
     }
 

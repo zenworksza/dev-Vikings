@@ -26,7 +26,7 @@ test('a document is stored privately under a generated name', function () {
         ->and($document->type)->toBe('identity')
         ->and($document->status)->toBe(DocumentStatus::Pending)
         ->and($document->disk)->toBe('local')
-        ->and($document->path)->toStartWith("applications/{$this->application->id}/")
+        ->and($document->path)->toStartWith("applications/{$this->application->id}/")->and($document->path)->toEndWith('.enc')
         ->and($document->path)->not->toContain('passport');
 
     Storage::disk('local')->assertExists($document->path);

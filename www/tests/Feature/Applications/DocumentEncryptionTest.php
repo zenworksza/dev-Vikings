@@ -3,71 +3,103 @@
 use App\Models\FranchiseeApplication;
 use App\Models\User;
 use App\Services\DocumentStorage;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
-/** Loads config/filesystems.php as the app would with the given env. */
-function filesystemsConfigWith(array $env): array
+beforeEach(function () {
+    $this->seed(RoleSeeder::class);
+    Storage::fake('local');
+
+    $this->application = FranchiseeApplication::create(['user_id' => User::factory()->create()->id]);
+    $this->plaintext = "SECRET-ID-DOCUMENT 8503045800087 \x00\x01\x02 binary";
+});
+
+function fakeUpload(string $contents, string $name = 'id.pdf'): UploadedFile
 {
-    foreach ($env as $key => $value) {
-        $value === null ? putenv($key) : putenv("$key=$value");
-    }
-
-    try {
-        return require config_path('filesystems.php');
-    } finally {
-        foreach (array_keys($env) as $key) {
-            putenv($key);
-        }
-    }
+    return UploadedFile::fake()->createWithContent($name, $contents);
 }
 
-test('the documents disk writes every object with SSE-KMS when a key is configured', function () {
-    $config = filesystemsConfigWith(['AWS_KMS_KEY_ID' => 'arn:aws:kms:af-south-1:111122223333:key/abc']);
+test('what reaches the disk is ciphertext, not the document', function () {
+    $document = app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext), 'identity');
 
-    expect($config['disks']['documents'])
-        ->driver->toBe('s3')
-        ->visibility->toBe('private')
-        ->throw->toBeTrue()
-        ->options->toBe([
-            'ServerSideEncryption' => 'aws:kms',
-            'SSEKMSKeyId' => 'arn:aws:kms:af-south-1:111122223333:key/abc',
-        ]);
+    $onDisk = Storage::disk('local')->get($document->path);
+
+    expect($document->encrypted)->toBeTrue()
+        ->and($onDisk)->not->toContain('SECRET-ID-DOCUMENT')
+        ->and($onDisk)->not->toContain('8503045800087')
+        ->and($onDisk)->not->toBe($this->plaintext);
 });
 
-test('without a KMS key the documents disk is not considered encrypted', function () {
-    config(['filesystems.disks.documents' => filesystemsConfigWith(['AWS_KMS_KEY_ID' => null])['disks']['documents']]);
+test('an admin download returns the original bytes', function () {
+    $document = app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext, 'passport.pdf'), 'identity');
 
-    expect(app(DocumentStorage::class)->isEncrypted('documents'))->toBeFalse()
-        ->and(app(DocumentStorage::class)->isEncrypted('local'))->toBeFalse();
+    $admin = User::factory()->create()->assignRole('platform_admin');
+    $response = $this->actingAs($admin)->get(route('admin.application-documents.download', $document));
 
-    config(['filesystems.disks.documents' => filesystemsConfigWith(['AWS_KMS_KEY_ID' => 'key-1'])['disks']['documents']]);
-
-    expect(app(DocumentStorage::class)->isEncrypted('documents'))->toBeTrue();
+    $response->assertOk();
+    expect($response->streamedContent())->toBe($this->plaintext)
+        ->and($response->headers->get('content-disposition'))->toContain('passport.pdf');
 });
 
-test('production refuses to store a document anywhere but encrypted S3', function () {
+test('a tampered file fails to decrypt instead of returning garbage', function () {
+    $document = app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext), 'identity');
+
+    $cipher = Storage::disk('local')->get($document->path);
+    Storage::disk('local')->put($document->path, substr($cipher, 0, -6).'AAAAAA');
+
+    expect(fn () => app(DocumentStorage::class)->download($document))
+        ->toThrow(RuntimeException::class, 'could not be decrypted');
+});
+
+test('a document cannot be read with a different key', function () {
+    $document = app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext), 'identity');
+
+    config(['documents.encryption_key' => 'base64:'.base64_encode(random_bytes(32))]);
+
+    expect(fn () => app(DocumentStorage::class)->download($document))
+        ->toThrow(RuntimeException::class, 'could not be decrypted');
+});
+
+test('a dedicated key is used when configured, and differs from APP_KEY', function () {
+    $key = 'base64:'.base64_encode(random_bytes(32));
+    config(['documents.encryption_key' => $key]);
+
+    $document = app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext), 'identity');
+
+    // Readable with the dedicated key...
+    expect(app(DocumentStorage::class)->download($document))->toBeInstanceOf(StreamedResponse::class);
+
+    // ...but not with the app key alone.
+    config(['documents.encryption_key' => null]);
+    expect(fn () => app(DocumentStorage::class)->download($document))->toThrow(RuntimeException::class);
+});
+
+test('production refuses to store a document on local disk', function () {
     $this->app['env'] = 'production';
-    config(['filesystems.documents_disk' => 'local']);
+    config(['filesystems.documents_disk' => 'local', 'documents.encryption_key' => 'base64:'.base64_encode(random_bytes(32))]);
 
-    $application = FranchiseeApplication::create(['user_id' => User::factory()->create()->id]);
+    expect(fn () => app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext), 'identity'))
+        ->toThrow(RuntimeException::class, 'requires an S3 disk');
 
-    expect(fn () => app(DocumentStorage::class)->store(
-        $application,
-        UploadedFile::fake()->create('id.pdf', 10, 'application/pdf'),
-        'identity',
-    ))->toThrow(RuntimeException::class, 'requires an S3 disk with SSE-KMS');
-
-    expect($application->documents()->count())->toBe(0);
+    expect($this->application->documents()->count())->toBe(0);
 });
 
-test('production accepts an SSE-KMS S3 disk', function () {
+test('production refuses to store a document without a dedicated encryption key', function () {
     $this->app['env'] = 'production';
-    config([
-        'filesystems.documents_disk' => 'documents',
-        'filesystems.disks.documents' => filesystemsConfigWith(['AWS_KMS_KEY_ID' => 'key-1'])['disks']['documents'],
-    ]);
+    config(['filesystems.documents_disk' => 'documents', 'documents.encryption_key' => null]);
 
-    app(DocumentStorage::class)->assertEncryptedInProduction();
+    expect(fn () => app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext), 'identity'))
+        ->toThrow(RuntimeException::class, 'DOCUMENTS_ENCRYPTION_KEY');
+});
 
-    expect(true)->toBeTrue(); // no exception
+test('production accepts an S3 disk with an encryption key', function () {
+    $this->app['env'] = 'production';
+    config(['filesystems.documents_disk' => 'documents', 'documents.encryption_key' => 'base64:'.base64_encode(random_bytes(32))]);
+
+    app(DocumentStorage::class)->assertSafeForProduction();
+
+    expect(config('filesystems.disks.documents.driver'))->toBe('s3')
+        ->and(config('filesystems.disks.documents.visibility'))->toBe('private');
 });

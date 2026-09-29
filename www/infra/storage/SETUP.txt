@@ -1,0 +1,38 @@
+Document storage (Z1 Storage, S3-compatible)
+============================================
+
+Franchisee-application documents are stored in an S3-compatible bucket.
+Z1 Storage does NOT support server-side encryption, so the app encrypts every
+file itself (AES-256-GCM) before uploading — the bucket only holds ciphertext.
+See config/documents.php and App\Services\DocumentStorage.
+
+Bucket:   vikingfranchise
+Endpoint: https://s3.z1storage.com   (path-style URLs, region us-east-1)
+
+Set these ONLY in the server's /var/www/vikings/www/.env (never in git or chat):
+
+    DOCUMENTS_DISK=documents
+    AWS_ACCESS_KEY_ID=...
+    AWS_SECRET_ACCESS_KEY=...
+    AWS_DEFAULT_REGION=us-east-1
+    AWS_BUCKET=vikingfranchise
+    AWS_ENDPOINT=https://s3.z1storage.com
+    AWS_USE_PATH_STYLE_ENDPOINT=true
+    DOCUMENTS_ENCRYPTION_KEY=base64:...
+
+Generate the encryption key once:
+
+    php -r "echo 'base64:'.base64_encode(random_bytes(32)).PHP_EOL;"
+
+!! BACK UP DOCUMENTS_ENCRYPTION_KEY OUTSIDE THE SERVER (password manager).
+!! If it is lost, every stored document is permanently unreadable.
+!! Do not change it once documents exist (that would also make them unreadable).
+
+In production the app refuses to store a document unless DOCUMENTS_DISK points
+at an S3 disk and DOCUMENTS_ENCRYPTION_KEY is set.
+
+Verify after deploying: upload a test document in the portal, then look at the
+object in the bucket — it must be unreadable binary, not a PDF/image.
+
+Credentials: use a key limited to this bucket, and rotate it if it was ever
+shared in chat or email.

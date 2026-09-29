@@ -2,10 +2,12 @@
     // guest.blade.php only ever serves the franchise portal (login,
     // register, forgot/reset password) — always the Hearthwood dashboard
     // theme, regardless of which host it's reached on. See Plan.md's brand
-    // palette decision and App\Support\SiteTheme.
+    // palette decision.
     $brand = app(\App\Settings\BrandSettings::class);
     $prefix = 'dashboard';
-    $homeUrl = \App\Support\SiteTheme::otherSiteUrl('/');
+    // The public marketing site is a separate static site (see www/site/) —
+    // link out to it when its host is configured, else stay on the portal.
+    $homeUrl = config('app.public_host') ? 'https://'.config('app.public_host') : url('/login');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

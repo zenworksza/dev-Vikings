@@ -1,0 +1,70 @@
+/* Ember — navy ground, bone text, red accent. Cinzel headings / Inter body. */
+:root {
+    --surface: #1B2A38;
+    --surface-alt: #22384A;
+    --ink: #F1EDE4;
+    --ink-muted: #C9D8DD;
+    --accent: #9B2226;
+    --rule: #4A6670;
+    --radius: 2px;
+    --heading: 'Cinzel', Georgia, serif;
+    --body: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+
+a { color: inherit; }
+
+.site-header { border-bottom: 1px solid color-mix(in srgb, var(--rule) 25%, transparent); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; padding-bottom: 1rem; }
+.brand img { display: block; height: 2rem; width: auto; }
+.site-header nav { display: flex; align-items: center; gap: 1.5rem; font-size: .875rem; font-weight: 500; color: var(--ink-muted); }
+.site-header nav a { text-decoration: none; }
+.site-header nav a:hover { opacity: .8; }
+
+.btn {
+    display: inline-block;
+    padding: .75rem 1.5rem;
+    background: var(--accent);
+    color: var(--ink) !important;
+    border-radius: var(--radius);
+    font-size: .875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity .15s;
+}
+.btn:hover { opacity: .9; }
+.btn-sm { padding: .5rem 1rem; }
+
+.hero { padding-top: 6rem; padding-bottom: 5rem; text-align: center; }
+.eyebrow { margin: 0 0 1rem; font-size: .75rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-muted); }
+h1, h2 { font-family: var(--heading); font-weight: 600; line-height: 1.15; margin: 0; }
+h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); }
+.lead { max-width: 42rem; margin: 1.5rem auto 0; font-size: 1.125rem; color: var(--ink-muted); }
+.actions { margin-top: 2.5rem; display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
+.link { font-size: .875rem; font-weight: 500; color: var(--ink-muted); text-decoration: none; }
+.link:hover { opacity: .8; }
+
+.story { max-width: 46rem; padding-bottom: 5rem; color: var(--ink-muted); font-size: 1.0625rem; }
+
+.cta { background: var(--surface-alt); border-top: 1px solid color-mix(in srgb, var(--rule) 25%, transparent); padding: 4.5rem 0; text-align: center; }
+.cta h2 { font-size: clamp(1.75rem, 4vw, 2.25rem); }
+.cta p { max-width: 36rem; margin: 1rem auto 2rem; color: var(--ink-muted); }
+
+.site-footer { border-top: 1px solid color-mix(in srgb, var(--rule) 25%, transparent); background: var(--surface-alt); padding: 2rem 0; font-size: .875rem; color: var(--ink-muted); }
+
+@media (max-width: 40rem) {
+    .site-header nav a:first-child { display: none; }
+    .hero { padding-top: 4rem; }
+}

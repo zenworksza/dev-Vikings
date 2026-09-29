@@ -125,21 +125,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Site hostnames
+    | Public site hostname
     |--------------------------------------------------------------------------
     |
-    | One Laravel app, two front-ends on two subdomains: the public
-    | marketing site (Ember brand) and the franchise portal — investor
-    | signup/login plus the Filament /admin and /portal panels (Hearthwood
-    | brand). Layouts pick their theme by comparing the current request's
-    | host against `portal_host`. Left null in local dev (no real
-    | subdomains there), so everything just renders the public theme, as
-    | before.
+    | The public marketing site is a separate static PHP site (www/site/),
+    | served by nginx directly — Laravel only serves the franchise portal.
+    | `public_host` is used to link back to it from the portal. Left null in
+    | local dev.
     |
     */
 
     'public_host' => env('PUBLIC_SITE_HOST'),
-
-    'portal_host' => env('FRANCHISE_PORTAL_HOST'),
 
 ];

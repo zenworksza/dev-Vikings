@@ -17,7 +17,12 @@
 
             @switch($this->application->status)
                 @case(\App\Enums\ApplicationStatus::Approved)
-                    <p>Congratulations — your application has been approved. You now have franchisee access; more tools will appear here soon.</p>
+                    <p>Congratulations — your application has been approved. You now have franchisee access.</p>
+                    <p class="mt-3">
+                        <x-filament::button tag="a" :href="\App\Filament\Portal\Resources\Locations\LocationResource::getUrl('index')">
+                            Add or manage your locations
+                        </x-filament::button>
+                    </p>
                     @break
                 @case(\App\Enums\ApplicationStatus::Rejected)
                     <p>After review we are unable to proceed with your application.</p>

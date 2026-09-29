@@ -39,6 +39,7 @@ class PortalPanelProvider extends PanelProvider
             ->brandName(fn () => app(BrandSettings::class)->site_name)
             ->brandLogo(fn () => app(BrandSettings::class)->dashboard_logo_path)
             ->brandLogoHeight('2rem')
+            ->discoverResources(in: app_path('Filament/Portal/Resources'), for: 'App\\Filament\\Portal\\Resources')
             ->pages([
                 FranchiseApplication::class,
             ])

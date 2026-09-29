@@ -3,13 +3,15 @@ $pageTitle = 'Vikings — Franchise Opportunities';
 $pageDescription = 'For three generations, Vikings has fed coastal families around one hearth. Apply to open the next one — franchise opportunities available now.';
 require __DIR__.'/includes/header.php';
 ?>
-        <section class="hero container">
-            <p class="eyebrow">Franchise With Vikings</p>
-            <h1>Bring the hearth to your harbor.</h1>
-            <p class="lead">For three generations, Vikings has fed coastal families around a single wood-fired hearth. We're looking for owners ready to light that fire in their own town &mdash; a proven menu, a loyal build, and long tables that never go empty.</p>
-            <div class="actions">
-                <a href="<?= PORTAL_URL ?>/register" class="btn">Apply as a franchisee</a>
-                <a href="<?= PORTAL_URL ?>/login" class="link">Log in</a>
+        <section class="hero">
+            <div class="container">
+                <p class="eyebrow">Franchise With Vikings</p>
+                <h1>Bring the hearth to your harbor.</h1>
+                <p class="lead">For three generations, Vikings has fed coastal families around a single wood-fired hearth. We're looking for owners ready to light that fire in their own town &mdash; a proven menu, a loyal build, and long tables that never go empty.</p>
+                <div class="actions">
+                    <a href="<?= PORTAL_URL ?>/register" class="btn">Apply as a franchisee</a>
+                    <a href="<?= PORTAL_URL ?>/login" class="link">Log in</a>
+                </div>
             </div>
         </section>
 

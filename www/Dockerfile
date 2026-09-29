@@ -37,7 +37,6 @@ RUN apk add --no-cache \
 COPY docker/php.ini /usr/local/etc/php/conf.d/99-app.ini
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 COPY docker/nginx-app.conf /etc/nginx/vikings-app.conf
-COPY docker/nginx-site.conf /etc/nginx/vikings-site.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

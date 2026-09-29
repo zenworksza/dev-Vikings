@@ -12,12 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Behind the compose front proxy (docker/proxy.conf), so client IP
-        // (login throttling) and scheme come from its X-Forwarded-* headers.
+        // Behind the compose front proxy (docker/proxy.conf), so client IP and
+        // scheme come from its X-Forwarded-* headers.
         $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
+            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
     })->create();

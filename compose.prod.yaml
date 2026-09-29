@@ -1,0 +1,102 @@
+# Production stack for both sites. `name: www` is deliberate: the stack used
+# to live in www/ (project "www"), and keeping that name reuses the existing
+# mysql-data / redis-data / app-storage volumes instead of creating empty ones.
+#
+#   proxy  — only published port; routes by hostname (docker/proxy.conf)
+#   portal — franchise portal (./www), database `vikings`
+#   site   — public site + booking portal (./site), database `vikings_site`
+#   mysql  — one server, two databases with separate users
+#   redis  — portal queue worker
+#
+# Always run through deploy.sh (it passes --env-file www/.env, which supplies
+# DB_PASSWORD for the mysql service and creates the site's database).
+
+name: www
+
+services:
+    proxy:
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - '${APP_PORT:-80}:80'
+        volumes:
+            - ./docker/proxy.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./docker/proxy-headers.conf:/etc/nginx/proxy-headers.conf:ro
+        networks:
+            - vikings
+        depends_on:
+            - portal
+            - site
+
+    portal:
+        build:
+            context: ./www
+            dockerfile: Dockerfile
+        image: vikings-app:prod
+        restart: unless-stopped
+        env_file: ./www/.env
+        environment:
+            DB_HOST: mysql
+            REDIS_HOST: redis
+        volumes:
+            - app-storage:/var/www/html/storage/app
+        networks:
+            - vikings
+        depends_on:
+            - mysql
+            - redis
+
+    site:
+        build:
+            context: ./site
+            dockerfile: Dockerfile
+        image: vikings-site:prod
+        restart: unless-stopped
+        env_file: ./site/.env
+        environment:
+            DB_HOST: mysql
+        networks:
+            - vikings
+        depends_on:
+            - mysql
+
+    mysql:
+        image: 'mysql:8.4'
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+        volumes:
+            - mysql-data:/var/lib/mysql
+        networks:
+            - vikings
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-p${DB_PASSWORD}']
+            retries: 5
+            timeout: 5s
+
+    redis:
+        image: 'redis:alpine'
+        restart: unless-stopped
+        volumes:
+            - redis-data:/data
+        networks:
+            - vikings
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            retries: 5
+            timeout: 5s
+
+networks:
+    vikings:
+        driver: bridge
+
+volumes:
+    mysql-data:
+        driver: local
+    redis-data:
+        driver: local
+    app-storage:
+        driver: local

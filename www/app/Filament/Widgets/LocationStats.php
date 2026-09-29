@@ -29,6 +29,9 @@ class LocationStats extends StatsOverviewWidget
             Stat::make('Inactive locations', Location::where('status', LocationStatus::Inactive->value)->count())
                 ->color('gray')
                 ->url($link(LocationStatus::Inactive)),
+            Stat::make('Company-owned', Location::whereNull('user_id')->count())
+                ->description('Run by the franchisor')
+                ->color('warning'),
             Stat::make('Franchisees with a location', Location::query()->distinct()->count('user_id'))
                 ->description('Owning at least one')
                 ->color('info'),

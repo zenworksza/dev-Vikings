@@ -3,6 +3,7 @@
 namespace App\Filament\Support;
 
 use App\Enums\LocationStatus;
+use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -16,10 +17,14 @@ class LocationForm
         'Mpumalanga', 'Northern Cape', 'North West', 'Western Cape',
     ];
 
-    /** @return list<Section> */
-    public static function schema(): array
+    /**
+     * @param  bool  $withOwner  Admin form: show the owner picker (franchisee or company-owned).
+     * @return list<Section>
+     */
+    public static function schema(bool $withOwner = false): array
     {
         return [
+            ...($withOwner ? [self::ownerSection()] : []),
             Section::make('Location')->columns(2)->schema([
                 TextInput::make('name')->required()->maxLength(120)
                     ->helperText('For example "Vikings Hout Bay".'),
@@ -46,5 +51,17 @@ class LocationForm
                     ->helperText('Booking requests for this location are sent here.'),
             ]),
         ];
+    }
+
+    private static function ownerSection(): Section
+    {
+        return Section::make('Ownership')->schema([
+            Select::make('user_id')
+                ->label('Owner')
+                ->options(fn () => User::role('franchisee')->orderBy('name')->pluck('name', 'id'))
+                ->searchable()
+                ->placeholder('Franchisor (company-owned)')
+                ->helperText('Leave empty for a company-owned location. Choose a franchisee when a location is sold to them; clear it to take a location back.'),
+        ]);
     }
 }

@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 /**
- * A restaurant location owned by a franchisee. New locations are active
- * straight away (the admin list is after-the-fact oversight, not a gate).
+ * A restaurant location. `user_id` is the franchisee who owns it; a null
+ * owner means it is company-owned (run by the franchisor — opened before
+ * being sold on, or taken back from a franchisee). New locations are active
+ * straight away.
  *
  * @property LocationStatus $status
- * @property User $user
+ * @property User|null $user
  */
 #[Fillable([
     'user_id', 'name', 'slug', 'status', 'description',
@@ -53,6 +55,11 @@ class Location extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function isCompanyOwned(): bool
+    {
+        return $this->user_id === null;
     }
 
     /** @param  Builder<Location>  $query */

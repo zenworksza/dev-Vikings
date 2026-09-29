@@ -66,9 +66,9 @@ test('the policy lets franchisees manage only their own locations', function () 
         ->and($other->can('view', $location))->toBeFalse()
         ->and($other->can('update', $location))->toBeFalse()
         ->and($investor->can('viewAny', Location::class))->toBeFalse()
-        ->and($investor->can('create', Location::class))->toBeFalse()
         ->and($admin->can('update', $location))->toBeTrue()
         ->and($admin->can('view', $location))->toBeTrue()
         ->and($mine->can('create', Location::class))->toBeTrue()
-        ->and($admin->can('create', Location::class))->toBeFalse();
+        ->and($admin->can('create', Location::class))->toBeTrue()
+        ->and($investor->can('create', Location::class))->toBeFalse();
 });

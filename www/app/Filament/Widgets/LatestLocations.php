@@ -25,7 +25,7 @@ class LatestLocations extends TableWidget
             ->paginated(false)
             ->columns([
                 TextColumn::make('name'),
-                TextColumn::make('user.name')->label('Franchisee'),
+                TextColumn::make('user.name')->label('Owner')->placeholder('Company-owned'),
                 TextColumn::make('city'),
                 TextColumn::make('status')
                     ->badge()

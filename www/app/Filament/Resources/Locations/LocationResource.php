@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Locations;
 
 use App\Enums\LocationStatus;
+use App\Filament\Resources\Locations\Pages\CreateLocation;
 use App\Filament\Resources\Locations\Pages\EditLocation;
 use App\Filament\Resources\Locations\Pages\ListLocations;
 use App\Filament\Support\LocationForm;
@@ -13,10 +14,15 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
-/** Platform-admin oversight of every franchisee's locations. */
+/**
+ * Platform-admin management of every location: create company-owned ones,
+ * reassign a location to a franchisee when it is sold, or take one back.
+ */
 class LocationResource extends Resource
 {
     protected static ?string $model = Location::class;
@@ -27,15 +33,9 @@ class LocationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    // Locations are created by franchisees; admins review and correct them.
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
     public static function form(Schema $schema): Schema
     {
-        return $schema->components(LocationForm::schema());
+        return $schema->components(LocationForm::schema(withOwner: true));
     }
 
     public static function table(Table $table): Table
@@ -44,7 +44,7 @@ class LocationResource extends Resource
             ->defaultSort('name')
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('user.name')->label('Franchisee')->searchable()->sortable(),
+                TextColumn::make('user.name')->label('Owner')->placeholder('Company-owned')->searchable()->sortable(),
                 TextColumn::make('city')->searchable()->sortable(),
                 TextColumn::make('province')->sortable(),
                 TextColumn::make('status')
@@ -57,6 +57,10 @@ class LocationResource extends Resource
                 SelectFilter::make('status')->options(
                     collect(LocationStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->label()])
                 ),
+                Filter::make('company_owned')
+                    ->label('Company-owned only')
+                    ->toggle()
+                    ->query(fn (Builder $query) => $query->whereNull('user_id')),
                 SelectFilter::make('province')->options(array_combine(LocationForm::PROVINCES, LocationForm::PROVINCES)),
             ])
             ->recordActions([EditAction::make()]);
@@ -66,6 +70,7 @@ class LocationResource extends Resource
     {
         return [
             'index' => ListLocations::route('/'),
+            'create' => CreateLocation::route('/create'),
             'edit' => EditLocation::route('/{record}/edit'),
         ];
     }

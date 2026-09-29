@@ -6,9 +6,9 @@ use App\Models\Location;
 use App\Models\User;
 
 /**
- * Franchisees manage only their own locations; platform admins can see and
- * correct all of them (oversight), but locations are always created by
- * franchisees.
+ * Franchisees manage only their own locations. Platform admins manage all of
+ * them and can create them — the franchisor opens locations itself (company-
+ * owned) and reassigns them when a location is sold or taken back.
  */
 class LocationPolicy
 {
@@ -24,7 +24,7 @@ class LocationPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasRole('franchisee');
+        return $user->hasAnyRole(['franchisee', 'platform_admin']);
     }
 
     public function update(User $user, Location $location): bool

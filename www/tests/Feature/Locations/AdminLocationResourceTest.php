@@ -5,6 +5,7 @@ use App\Filament\Portal\Resources\Locations\Pages\ListLocations as PortalListLoc
 use App\Filament\Resources\Locations\Pages\CreateLocation;
 use App\Filament\Resources\Locations\Pages\EditLocation;
 use App\Filament\Resources\Locations\Pages\ListLocations;
+use App\Filament\Resources\Locations\RelationManagers\OwnershipHistoryRelationManager;
 use App\Filament\Widgets\LatestLocations;
 use App\Filament\Widgets\LocationStats;
 use App\Models\Location;
@@ -189,4 +190,17 @@ test('the stats count company-owned locations', function () {
         ->mapWithKeys(fn ($stat) => [(string) $stat->getLabel() => $stat->getValue()]);
 
     expect($stats['Company-owned'])->toBe(1);
+});
+
+test('the ownership history shows on the location page', function () {
+    $franchisee = User::factory()->create(['name' => 'Bob Franchisee'])->assignRole('franchisee');
+    $location = adminLocation('History Cafe', null, ['user_id' => null]);
+    $location->update(['user_id' => $franchisee->id]);
+
+    Livewire::test(OwnershipHistoryRelationManager::class, [
+        'ownerRecord' => $location, 'pageClass' => EditLocation::class,
+    ])
+        ->assertCanSeeTableRecords($location->ownershipHistory)
+        ->assertSee('Sold / assigned to franchisee')
+        ->assertSee('Franchisor → Bob Franchisee');
 });

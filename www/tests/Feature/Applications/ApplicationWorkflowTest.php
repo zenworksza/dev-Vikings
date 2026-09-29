@@ -26,6 +26,7 @@ test('a new application starts as a draft', function () {
 test('the happy path ends approved with the franchisee role granted', function () {
     $this->workflow->submit($this->application, $this->applicant);
     $this->workflow->startReview($this->application, $this->admin);
+    acceptRequiredDocuments($this->application);
     $this->workflow->approve($this->application, $this->admin, 'Welcome aboard');
 
     $application = $this->application->fresh();
@@ -99,6 +100,7 @@ test('the applicant can resubmit after changes are requested', function () {
 test('the applicant is emailed on submit, changes, approval and rejection but not on start of review', function () {
     $this->workflow->submit($this->application, $this->applicant);
     $this->workflow->startReview($this->application, $this->admin);
+    acceptRequiredDocuments($this->application);
     $this->workflow->approve($this->application, $this->admin);
 
     Notification::assertSentTo($this->applicant, ApplicationStatusChanged::class, function ($n, $channels) {

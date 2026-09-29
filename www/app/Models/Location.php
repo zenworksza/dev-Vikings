@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Enums\LocationStatus;
+use App\Services\LocationOwnershipRecorder;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -42,6 +44,20 @@ class Location extends Model
                 $location->slug = self::uniqueSlug($location->name.' '.$location->city);
             }
         });
+
+        // Every ownership event is recorded (and the franchisee told) here so
+        // no code path can change an owner silently.
+        static::created(fn (Location $location) => app(LocationOwnershipRecorder::class)->recordCreation($location));
+
+        static::updated(function (Location $location) {
+            if ($location->wasChanged('user_id')) {
+                app(LocationOwnershipRecorder::class)->recordChange(
+                    $location,
+                    $location->getOriginal('user_id'),
+                    $location->user_id,
+                );
+            }
+        });
     }
 
     protected function casts(): array
@@ -55,6 +71,12 @@ class Location extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /** @return HasMany<LocationOwnershipHistory, $this> */
+    public function ownershipHistory(): HasMany
+    {
+        return $this->hasMany(LocationOwnershipHistory::class)->latest('id');
     }
 
     public function isCompanyOwned(): bool

@@ -39,6 +39,8 @@ test('an admin can review and approve an application', function () {
 
     expect($this->application->fresh()->status)->toBe(ApplicationStatus::UnderReview);
 
+    acceptRequiredDocuments($this->application);
+
     Livewire::test(ViewApplication::class, ['record' => $this->application->getKey()])
         ->assertActionHidden('startReview')
         ->assertActionVisible('approve')

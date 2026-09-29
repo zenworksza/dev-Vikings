@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Applications;
 
 use App\Filament\Resources\Applications\Pages\ListApplications;
 use App\Filament\Resources\Applications\Pages\ViewApplication;
+use App\Filament\Resources\Applications\RelationManagers\DocumentsRelationManager;
 use App\Filament\Resources\Applications\Tables\ApplicationsTable;
 use App\Models\FranchiseeApplication;
 use BackedEnum;
@@ -56,21 +57,6 @@ class ApplicationResource extends Resource
                 ViewEntry::make('data')->hiddenLabel()->view('filament.admin.application-answers'),
             ]),
 
-            Section::make('Documents')->schema([
-                RepeatableEntry::make('documents')->hiddenLabel()->columns(4)->schema([
-                    TextEntry::make('type'),
-                    TextEntry::make('original_name')
-                        ->label('File')
-                        ->url(fn ($record) => route('admin.application-documents.download', $record))
-                        ->openUrlInNewTab(),
-                    TextEntry::make('status')
-                        ->badge()
-                        ->formatStateUsing(fn ($state) => $state->label())
-                        ->color(fn ($state) => $state->color()),
-                    TextEntry::make('review_note')->placeholder('—'),
-                ])->placeholder('No documents uploaded'),
-            ]),
-
             Section::make('History')->collapsed()->schema([
                 RepeatableEntry::make('history')->hiddenLabel()->columns(4)->schema([
                     TextEntry::make('created_at')->dateTime(),
@@ -85,6 +71,11 @@ class ApplicationResource extends Resource
     public static function table(Table $table): Table
     {
         return ApplicationsTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [DocumentsRelationManager::class];
     }
 
     public static function getPages(): array

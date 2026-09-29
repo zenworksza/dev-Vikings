@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Enums\ApplicationStatus;
+use App\Exceptions\DocumentsNotVerified;
 use App\Exceptions\InvalidApplicationTransition;
 use App\Models\FranchiseeApplication;
 use App\Models\User;
 use App\Notifications\ApplicationStatusChanged;
+use App\Support\ApplicationSubmission;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -56,6 +58,14 @@ class ApplicationWorkflow
 
         if (in_array($to, [ApplicationStatus::ChangesRequested, ApplicationStatus::Rejected], true) && blank($note)) {
             throw new InvalidArgumentException("A reason is required to move an application to '{$to->label()}'.");
+        }
+
+        if ($to === ApplicationStatus::Approved) {
+            $unverified = ApplicationSubmission::unverifiedDocuments($application);
+
+            if ($unverified !== []) {
+                throw DocumentsNotVerified::for($unverified);
+            }
         }
 
         DB::transaction(function () use ($application, $from, $to, $actor, $note) {

@@ -6,6 +6,7 @@ use App\Enums\ApplicationStatus;
 use App\Filament\Resources\Applications\ApplicationResource;
 use App\Models\FranchiseeApplication;
 use App\Services\ApplicationWorkflow;
+use App\Support\ApplicationSubmission;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
@@ -29,6 +30,14 @@ class ViewApplication extends ViewRecord
 
             $this->workflowAction('approve', 'Approve', ApplicationStatus::Approved)
                 ->color('success')
+                ->disabled(fn () => ApplicationSubmission::unverifiedDocuments($this->application()) !== [])
+                ->tooltip(function () {
+                    $unverified = ApplicationSubmission::unverifiedDocuments($this->application());
+
+                    return $unverified === []
+                        ? null
+                        : 'Accept these documents first: '.collect($unverified)->map(fn ($type) => $type->label())->implode('; ');
+                })
                 ->requiresConfirmation()
                 ->modalDescription('The applicant will be granted franchisee access and notified.')
                 ->action(fn (ApplicationWorkflow $workflow) => $workflow->approve($this->application(), auth()->user())),

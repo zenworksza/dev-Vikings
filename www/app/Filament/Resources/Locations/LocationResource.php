@@ -6,6 +6,7 @@ use App\Enums\LocationStatus;
 use App\Filament\Resources\Locations\Pages\CreateLocation;
 use App\Filament\Resources\Locations\Pages\EditLocation;
 use App\Filament\Resources\Locations\Pages\ListLocations;
+use App\Filament\Resources\Locations\RelationManagers\OwnershipHistoryRelationManager;
 use App\Filament\Support\LocationForm;
 use App\Models\Location;
 use BackedEnum;
@@ -64,6 +65,11 @@ class LocationResource extends Resource
                 SelectFilter::make('province')->options(array_combine(LocationForm::PROVINCES, LocationForm::PROVINCES)),
             ])
             ->recordActions([EditAction::make()]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [OwnershipHistoryRelationManager::class];
     }
 
     public static function getPages(): array

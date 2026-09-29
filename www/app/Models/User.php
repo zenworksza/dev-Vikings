@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Services\LocationOwnershipRecorder;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -21,6 +22,18 @@ class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
+
+    protected static function booted(): void
+    {
+        // Their locations revert to the franchisor (the FK nulls the owner);
+        // record it first, while we still know who the owner was.
+        static::deleting(function (User $user) {
+            foreach ($user->locations as $location) {
+                app(LocationOwnershipRecorder::class)
+                    ->recordOwnerRemoved($location, $user, 'Owner account deleted');
+            }
+        });
+    }
 
     /** @return HasMany<Location, $this> */
     public function locations(): HasMany

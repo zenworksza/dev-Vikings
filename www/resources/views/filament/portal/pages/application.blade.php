@@ -5,6 +5,18 @@
                 <strong>Changes requested.</strong>
                 {{ $this->application->decision_reason }}
                 Update your application below and resubmit it.
+
+                @php($rejected = $this->application->documents()->where('status', \App\Enums\DocumentStatus::Rejected->value)->get())
+                @if ($rejected->isNotEmpty())
+                    <div class="mt-2">
+                        <strong>Documents to replace:</strong>
+                        <ul class="list-disc pl-5">
+                            @foreach ($rejected as $document)
+                                <li>{{ $document->original_name }} — {{ $document->review_note }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
         @endif
 

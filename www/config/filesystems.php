@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application documents disk
+    |--------------------------------------------------------------------------
+    |
+    | Where franchisee-application uploads (IDs, financials, etc.) are stored.
+    | Private local disk for now; set DOCUMENTS_DISK=s3 (with SSE-KMS on the
+    | bucket) once AWS is provisioned — see Plan.md. Never a public disk.
+    |
+    */
+
+    'documents_disk' => env('DOCUMENTS_DISK', 'local'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |

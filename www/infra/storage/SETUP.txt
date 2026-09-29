@@ -22,7 +22,9 @@ Set these ONLY in the server's /var/www/vikings/www/.env (never in git or chat):
 
 Generate the encryption key once:
 
-    php -r "echo 'base64:'.base64_encode(random_bytes(32)).PHP_EOL;"
+    echo "base64:$(openssl rand -base64 32)"
+
+(The value must be the WHOLE line output, e.g. base64:AbC...=, not just "base64:".)
 
 !! BACK UP DOCUMENTS_ENCRYPTION_KEY OUTSIDE THE SERVER (password manager).
 !! If it is lost, every stored document is permanently unreadable.

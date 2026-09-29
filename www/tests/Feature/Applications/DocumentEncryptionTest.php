@@ -103,3 +103,25 @@ test('production accepts an S3 disk with an encryption key', function () {
     expect(config('filesystems.disks.documents.driver'))->toBe('s3')
         ->and(config('filesystems.disks.documents.visibility'))->toBe('private');
 });
+
+test('an empty or malformed encryption key is rejected with a clear message', function (string $badKey) {
+    config(['documents.encryption_key' => $badKey]);
+
+    expect(fn () => app(DocumentStorage::class)->store($this->application, fakeUpload($this->plaintext), 'identity'))
+        ->toThrow(RuntimeException::class, 'DOCUMENTS_ENCRYPTION_KEY is invalid');
+
+    expect($this->application->documents()->count())->toBe(0);
+})->with([
+    'base64 prefix only' => 'base64:',
+    'too short' => 'base64:c2hvcnQ=',
+    'not base64' => 'base64:!!!not-base64!!!',
+    'plain text' => 'my-secret-key',
+]);
+
+test('production also rejects a malformed key before storing anything', function () {
+    $this->app['env'] = 'production';
+    config(['filesystems.documents_disk' => 'documents', 'documents.encryption_key' => 'base64:']);
+
+    expect(fn () => app(DocumentStorage::class)->assertSafeForProduction())
+        ->toThrow(RuntimeException::class, 'DOCUMENTS_ENCRYPTION_KEY is invalid');
+});

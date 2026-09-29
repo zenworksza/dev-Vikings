@@ -52,6 +52,8 @@ class DocumentStorage
         if (blank(config('documents.encryption_key'))) {
             throw new RuntimeException('Refusing to store documents: DOCUMENTS_ENCRYPTION_KEY is not set.');
         }
+
+        $this->encrypter(); // throws a clear error if the key is malformed
     }
 
     public function store(FranchiseeApplication $application, UploadedFile $file, string $type): ApplicationDocument
@@ -116,7 +118,14 @@ class DocumentStorage
         $key = config('documents.encryption_key') ?: config('app.key');
 
         if (str_starts_with((string) $key, 'base64:')) {
-            $key = base64_decode(substr($key, 7));
+            $key = base64_decode(substr($key, 7), true);
+        }
+
+        if (! is_string($key) || strlen($key) !== 32) {
+            throw new RuntimeException(
+                'DOCUMENTS_ENCRYPTION_KEY is invalid: it must be "base64:" followed by a base64-encoded 32-byte key. '
+                .'Generate one with: echo "base64:$(openssl rand -base64 32)"'
+            );
         }
 
         return new Encrypter($key, config('documents.cipher'));

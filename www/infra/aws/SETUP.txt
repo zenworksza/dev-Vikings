@@ -1,0 +1,39 @@
+AWS setup for franchisee-application documents
+==============================================
+
+Region: af-south-1 (Cape Town) is recommended (POPIA / latency).
+
+1. KMS: create a symmetric customer-managed key (alias e.g. vikings-documents).
+   Note its ARN  -> KMS_KEY_ARN below, and its key id/ARN for AWS_KMS_KEY_ID.
+
+2. S3: create a bucket (BUCKET_NAME).
+   - Block ALL public access: on.
+   - Versioning: on.
+   - Default encryption: SSE-KMS with the key from step 1 ("Bucket Key" on).
+   - Attach bucket-policy.json (replace BUCKET_NAME and KMS_KEY_ARN). It denies
+     non-TLS access and any upload that is not SSE-KMS with that key.
+   - Optional lifecycle rule: abort incomplete multipart uploads after 7 days.
+
+3. IAM: create a user (or role) "vikings-portal-documents" with NO console
+   access and attach iam-policy.json (replace BUCKET_NAME and KMS_KEY_ARN).
+   Create one access key for it.
+
+4. Put these ONLY in the server's /var/www/vikings/www/.env (never in git or chat):
+
+     DOCUMENTS_DISK=documents
+     AWS_ACCESS_KEY_ID=...
+     AWS_SECRET_ACCESS_KEY=...
+     AWS_DEFAULT_REGION=af-south-1
+     AWS_BUCKET=BUCKET_NAME
+     AWS_KMS_KEY_ID=<the key id or ARN>
+
+   Then redeploy. In production the app refuses to store documents unless
+   DOCUMENTS_DISK points at an SSE-KMS S3 disk.
+
+5. Verify with a real upload: upload a test document through the portal, then
+   in the S3 console open the object and confirm "Server-side encryption:
+   AWS KMS" with your key. (Or: aws s3api head-object ...)
+
+Notes
+- Downloads are 5-minute signed URLs generated only after an admin check.
+- The same AWS account can also be used for SES (approval emails).

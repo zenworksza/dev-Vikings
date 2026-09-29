@@ -7,9 +7,9 @@ use App\Filament\Resources\Applications\Pages\ViewApplication;
 use App\Filament\Resources\Applications\Tables\ApplicationsTable;
 use App\Models\FranchiseeApplication;
 use BackedEnum;
-use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -52,10 +52,8 @@ class ApplicationResource extends Resource
                 TextEntry::make('decision_reason')->label('Reviewer note')->placeholder('—')->columnSpanFull(),
             ]),
 
-            // Placeholder rendering of the raw answers until the real form
-            // (and a proper read-only layout for it) is defined.
             Section::make('Application answers')->schema([
-                KeyValueEntry::make('data')->hiddenLabel()->placeholder('No answers yet'),
+                ViewEntry::make('data')->hiddenLabel()->view('filament.admin.application-answers'),
             ]),
 
             Section::make('Documents')->schema([

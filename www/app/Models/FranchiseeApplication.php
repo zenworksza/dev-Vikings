@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property ApplicationStatus $status
  * @property User $user
+ * @property array<string, mixed>|null $data
  */
 #[Fillable(['user_id', 'status', 'data', 'submitted_at', 'reviewed_at', 'reviewed_by', 'decision_reason'])]
 class FranchiseeApplication extends Model
@@ -23,7 +24,7 @@ class FranchiseeApplication extends Model
     {
         return [
             'status' => ApplicationStatus::class,
-            'data' => 'array',
+            'data' => 'encrypted:array',
             'submitted_at' => 'datetime',
             'reviewed_at' => 'datetime',
         ];

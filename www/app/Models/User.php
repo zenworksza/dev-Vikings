@@ -31,6 +31,7 @@ class User extends Authenticatable implements FilamentUser
     {
         return match ($panel->getId()) {
             'admin' => $this->hasRole('platform_admin'),
+            'portal' => true,
             default => false,
         };
     }

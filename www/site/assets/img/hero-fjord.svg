@@ -55,7 +55,7 @@
   <polygon fill="#0f1b26" points="0,420 140,470 260,600 330,700 300,900 0,900"/>
   <polygon fill="#0f1b26" points="1600,380 1470,460 1360,590 1300,700 1330,900 1600,900"/>
 
-  <g transform="translate(800,700) scale(.9)">
+  <g transform="translate(800,740) scale(.9)">
     <ellipse cx="0" cy="66" rx="270" ry="9" fill="#050a0f" opacity=".45"/>
     <g stroke="#0d1620" stroke-width="3">
       <line x1="-120" y1="-10" x2="-158" y2="62"/><line x1="-80" y1="-10" x2="-118" y2="62"/><line x1="-40" y1="-10" x2="-78" y2="62"/>

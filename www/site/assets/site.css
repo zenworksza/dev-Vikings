@@ -47,13 +47,15 @@ a { color: inherit; }
 .btn:hover { opacity: .9; }
 .btn-sm { padding: .5rem 1rem; }
 
-/* Full-bleed Nordic fjord scene. The generous bottom padding reserves room
-   for the longship so it never sits under the text at any width. */
+/* Full-bleed Nordic fjord scene. The image is scaled by width, so the bottom
+   padding grows with the viewport (vw) to keep the longship's sail clear of
+   the text on wide screens; the fixed rem floor covers narrower ones. */
 .hero {
-    padding: 5rem 0 22rem;
+    padding: 3rem 0 max(20rem, 23vw);
     text-align: center;
+    text-shadow: 0 1px 12px rgba(12, 22, 32, .8);
     background:
-        linear-gradient(to bottom, rgba(12, 22, 32, .6), rgba(12, 22, 32, 0) 60%),
+        linear-gradient(to bottom, rgba(12, 22, 32, .7), rgba(12, 22, 32, 0) 65%),
         url('/assets/img/hero-fjord.svg') center bottom / cover no-repeat,
         var(--surface);
 }
@@ -72,5 +74,5 @@ h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); }
 
 @media (max-width: 40rem) {
     .site-header nav a:first-child { display: none; }
-    .hero { padding: 3.5rem 0 16rem; }
+    .hero { padding: 2.5rem 0 23rem; }
 }

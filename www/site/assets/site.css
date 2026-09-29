@@ -11,7 +11,9 @@
     --body: 'Inter', -apple-system, 'Segoe UI', sans-serif;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -22,16 +24,50 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-.container { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+.container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0;
+}
 
-a { color: inherit; }
+a {
+    color: inherit;
+}
 
-.site-header { border-bottom: 1px solid color-mix(in srgb, var(--rule) 25%, transparent); }
-.header-inner { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; padding-bottom: 1rem; }
-.brand img { display: block; height: 2rem; width: auto; }
-.site-header nav { display: flex; align-items: center; gap: 1.5rem; font-size: .875rem; font-weight: 500; color: var(--ink-muted); }
-.site-header nav a { text-decoration: none; }
-.site-header nav a:hover { opacity: .8; }
+.site-header {
+    border-bottom: 1px solid color-mix(in srgb, var(--rule) 25%, transparent);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.brand img {
+    display: block;
+    height: 2rem;
+    width: auto;
+}
+
+.site-header nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+}
+
+.site-header nav a {
+    text-decoration: none;
+}
+
+.site-header nav a:hover {
+    opacity: .8;
+}
 
 .btn {
     display: inline-block;
@@ -44,35 +80,96 @@ a { color: inherit; }
     text-decoration: none;
     transition: opacity .15s;
 }
-.btn:hover { opacity: .9; }
-.btn-sm { padding: .5rem 1rem; }
+
+.btn:hover {
+    opacity: .9;
+}
+
+.btn-sm {
+    padding: .5rem 1rem;
+}
 
 /* Full-bleed Nordic fjord scene. The image is scaled by width, so the bottom
    padding grows with the viewport (vw) to keep the longship's sail clear of
    the text on wide screens; the fixed rem floor covers narrower ones. */
 .hero {
-    padding: 3rem 0 max(20rem, 23vw);
+    padding: 1rem 0 max(20rem, 23vw);
     text-align: center;
     text-shadow: 0 1px 12px rgba(12, 22, 32, .8);
+    /* Image is nudged 50px down; the base colour matches the sky's top edge
+       so the strip that opens up at the top blends in. */
     background:
         linear-gradient(to bottom, rgba(12, 22, 32, .7), rgba(12, 22, 32, 0) 65%),
-        url('/assets/img/hero-fjord.svg') center bottom / cover no-repeat,
-        var(--surface);
+        url('/assets/img/hero-fjord.svg') center calc(100% + 50px) / cover no-repeat,
+        #0c1620;
 }
-.eyebrow { margin: 0 0 1rem; font-size: .75rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-muted); }
-h1, h2 { font-family: var(--heading); font-weight: 600; line-height: 1.15; margin: 0; }
-h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); }
-.lead { max-width: 42rem; margin: 1.5rem auto 0; font-size: 1.125rem; color: var(--ink-muted); }
 
-.story { max-width: 46rem; padding-bottom: 5rem; color: var(--ink-muted); font-size: 1.0625rem; }
+.eyebrow {
+    margin: 0 0 1rem;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+}
 
-.cta { background: var(--surface-alt); border-top: 1px solid color-mix(in srgb, var(--rule) 25%, transparent); padding: 4.5rem 0; text-align: center; }
-.cta h2 { font-size: clamp(1.75rem, 4vw, 2.25rem); }
-.cta p { max-width: 36rem; margin: 1rem auto 2rem; color: var(--ink-muted); }
+h1,
+h2 {
+    font-family: var(--heading);
+    font-weight: 600;
+    line-height: 1.15;
+    margin: 0;
+}
 
-.site-footer { border-top: 1px solid color-mix(in srgb, var(--rule) 25%, transparent); background: var(--surface-alt); padding: 2rem 0; font-size: .875rem; color: var(--ink-muted); }
+h1 {
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+}
+
+.lead {
+    max-width: 42rem;
+    margin: 1.5rem auto 0;
+    font-size: 1.125rem;
+    color: var(--ink-muted);
+}
+
+.story {
+    max-width: 46rem;
+    padding-bottom: 5rem;
+    color: var(--ink-muted);
+    font-size: 1.0625rem;
+}
+
+.cta {
+    background: var(--surface-alt);
+    border-top: 1px solid color-mix(in srgb, var(--rule) 25%, transparent);
+    padding: 4.5rem 0;
+    text-align: center;
+}
+
+.cta h2 {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+}
+
+.cta p {
+    max-width: 36rem;
+    margin: 1rem auto 2rem;
+    color: var(--ink-muted);
+}
+
+.site-footer {
+    border-top: 1px solid color-mix(in srgb, var(--rule) 25%, transparent);
+    background: var(--surface-alt);
+    padding: 2rem 0;
+    font-size: .875rem;
+    color: var(--ink-muted);
+}
 
 @media (max-width: 40rem) {
-    .site-header nav a:first-child { display: none; }
-    .hero { padding: 2.5rem 0 23rem; }
+    .site-header nav a:first-child {
+        display: none;
+    }
+
+    .hero {
+        padding: 1rem 0 23rem;
+    }
 }

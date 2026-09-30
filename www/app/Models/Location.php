@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\LocationStatus;
 use App\Services\LocationOwnershipRecorder;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -77,6 +78,43 @@ class Location extends Model
     public function ownershipHistory(): HasMany
     {
         return $this->hasMany(LocationOwnershipHistory::class)->latest('id');
+    }
+
+    /** @return HasMany<LocationService, $this> */
+    public function locationServices(): HasMany
+    {
+        return $this->hasMany(LocationService::class);
+    }
+
+    /** @return HasMany<LocationBusinessHour, $this> */
+    public function businessHours(): HasMany
+    {
+        return $this->hasMany(LocationBusinessHour::class);
+    }
+
+    /** @return HasMany<LocationSpecialDay, $this> */
+    public function specialDays(): HasMany
+    {
+        return $this->hasMany(LocationSpecialDay::class);
+    }
+
+    /**
+     * Opening window for a date as ['HH:MM', 'HH:MM'], or null when closed.
+     * A special day overrides the weekly hours.
+     *
+     * @return array{0: string, 1: string}|null
+     */
+    public function hoursOn(CarbonInterface $date): ?array
+    {
+        $special = $this->specialDays()->whereDate('date', $date->toDateString())->first();
+
+        $row = $special ?? $this->businessHours()->where('day_of_week', $date->dayOfWeek)->first();
+
+        if ($row === null || $row->opens_at === null) {
+            return null;
+        }
+
+        return [substr($row->opens_at, 0, 5), substr($row->closes_at, 0, 5)];
     }
 
     public function isCompanyOwned(): bool

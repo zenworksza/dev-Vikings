@@ -6,7 +6,10 @@ use App\Enums\LocationStatus;
 use App\Filament\Portal\Resources\Locations\Pages\CreateLocation;
 use App\Filament\Portal\Resources\Locations\Pages\EditLocation;
 use App\Filament\Portal\Resources\Locations\Pages\ListLocations;
+use App\Filament\Support\BusinessHoursRelationManager;
 use App\Filament\Support\LocationForm;
+use App\Filament\Support\LocationServicesRelationManager;
+use App\Filament\Support\SpecialDaysRelationManager;
 use App\Models\Location;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
@@ -60,6 +63,11 @@ class LocationResource extends Resource
             ])
             ->emptyStateHeading('No locations yet')
             ->emptyStateDescription('Add your first location to make it available on the public site.');
+    }
+
+    public static function getRelations(): array
+    {
+        return [LocationServicesRelationManager::class, BusinessHoursRelationManager::class, SpecialDaysRelationManager::class];
     }
 
     public static function getPages(): array

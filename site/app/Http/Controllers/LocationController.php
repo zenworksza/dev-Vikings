@@ -17,6 +17,16 @@ class LocationController extends Controller
         }
     }
 
+    /** Contact page: every location's phone, address and hours (never the private booking inbox). */
+    public function contact(PortalClient $portal): View
+    {
+        try {
+            return view('contact', ['locations' => $portal->locations()]);
+        } catch (PortalUnavailable) {
+            return view('locations.unavailable');
+        }
+    }
+
     public function show(PortalClient $portal, string $slug): View
     {
         try {

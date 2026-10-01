@@ -15,7 +15,6 @@ class HomeTest extends TestCase
             ->assertSee('Bring the hearth to your harbor.')
             ->assertSee('https://portal.example/register', false)
             ->assertSee('https://portal.example/login', false)
-            ->assertSee('Make a booking')
-            ->assertSee('href="'.route('locations.index').'" class="btn btn-sm">Make a booking', false);
+            ->assertSee('Make a booking');
     }
 }

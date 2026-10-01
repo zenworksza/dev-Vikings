@@ -6,6 +6,9 @@ use App\Http\Controllers\StaffBookingController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
+Route::view('/about', 'about')->name('about');
+Route::view('/franchise', 'franchise')->name('franchise');
+Route::get('/contact', [LocationController::class, 'contact'])->name('contact');
 
 Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
 Route::get('/locations/{slug}', [LocationController::class, 'show'])->name('locations.show');

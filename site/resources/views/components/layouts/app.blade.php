@@ -16,14 +16,29 @@
     @stack('head')
 </head>
 <body>
+    @php
+        // Main menu: label => [url, route patterns that mark it as the current section]
+        $menu = [
+            'Home' => [route('home'), ['home']],
+            'About' => [route('about'), ['about']],
+            'Franchise' => [route('franchise'), ['franchise']],
+            'Make a booking' => [route('locations.index'), ['locations.*', 'bookings.*']],
+            'Contact' => [route('contact'), ['contact']],
+        ];
+    @endphp
+    <div class="topbar">
+        <div class="container">
+            <a href="{{ config('site.portal_url') }}/login" class="btn btn-sm btn-quiet">Franchisee login</a>
+        </div>
+    </div>
+
     <header class="site-header">
         <div class="container header-inner">
             <a href="{{ route('home') }}" class="brand"><img src="{{ asset('images/logo-gold.png') }}" alt="{{ config('site.name') }}"></a>
-            <nav>
-                <a href="{{ route('locations.index') }}" class="nav-extra">Locations</a>
-                <a href="{{ config('site.portal_url') }}/login" class="nav-extra">Franchisee login</a>
-                <a href="{{ config('site.portal_url') }}/register" class="btn btn-sm btn-quiet nav-extra">Apply as a franchisee</a>
-                <a href="{{ route('locations.index') }}" class="btn btn-sm">Make a booking</a>
+            <nav aria-label="Main">
+                @foreach ($menu as $label => [$url, $patterns])
+                    <a href="{{ $url }}" class="btn btn-sm btn-quiet"@if (request()->routeIs(...$patterns)) aria-current="page"@endif>{{ $label }}</a>
+                @endforeach
             </nav>
         </div>
     </header>

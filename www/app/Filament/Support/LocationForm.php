@@ -36,6 +36,14 @@ class LocationForm
                 Textarea::make('description')->rows(3)->columnSpanFull()
                     ->helperText('A short blurb shown on the public location page.'),
             ]),
+            Section::make('Seating')->columns(2)->schema([
+                TextInput::make('table_count')->label('Number of tables')
+                    ->numeric()->integer()->required()->minValue(1)->maxValue(1000),
+                TextInput::make('seat_capacity')->label('Total seats (pax)')
+                    ->numeric()->integer()->required()->minValue(1)->maxValue(5000)
+                    ->gte('table_count')
+                    ->helperText('The most guests the restaurant can seat at once.'),
+            ]),
             Section::make('Address')->columns(2)->schema([
                 TextInput::make('address_line1')->label('Address line 1')->required(),
                 TextInput::make('address_line2')->label('Address line 2'),

@@ -22,6 +22,8 @@ function makeLocation(User $owner, array $overrides = []): Location
         'province' => 'Western Cape',
         'phone' => '0210000000',
         'contact_email' => 'houtbay@example.com',
+        'table_count' => 10,
+        'seat_capacity' => 40,
         ...$overrides,
     ]);
 }

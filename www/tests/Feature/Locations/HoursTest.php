@@ -18,7 +18,7 @@ beforeEach(function () {
     $this->actingAs($this->me);
     $this->location = Location::create([
         'user_id' => $this->me->id, 'name' => 'Alpha', 'address_line1' => '1 Main Road', 'city' => 'Durban',
-        'province' => 'KwaZulu-Natal', 'phone' => '0310000000', 'contact_email' => 'x@example.com',
+        'province' => 'KwaZulu-Natal', 'phone' => '0310000000', 'contact_email' => 'x@example.com', 'table_count' => 10, 'seat_capacity' => 40,
     ]);
 });
 

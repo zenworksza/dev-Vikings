@@ -8,7 +8,6 @@ use App\Filament\Portal\Resources\Locations\Pages\EditLocation;
 use App\Filament\Portal\Resources\Locations\Pages\ListLocations;
 use App\Filament\Support\BusinessHoursRelationManager;
 use App\Filament\Support\LocationForm;
-use App\Filament\Support\LocationServicesRelationManager;
 use App\Filament\Support\SpecialDaysRelationManager;
 use App\Models\Location;
 use BackedEnum;
@@ -67,7 +66,7 @@ class LocationResource extends Resource
 
     public static function getRelations(): array
     {
-        return [LocationServicesRelationManager::class, BusinessHoursRelationManager::class, SpecialDaysRelationManager::class];
+        return [BusinessHoursRelationManager::class, SpecialDaysRelationManager::class];
     }
 
     public static function getPages(): array

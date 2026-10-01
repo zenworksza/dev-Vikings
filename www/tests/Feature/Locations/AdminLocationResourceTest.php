@@ -27,7 +27,7 @@ function adminLocation(string $name, ?User $owner = null, array $overrides = [])
     return Location::create([
         'user_id' => ($owner ?? User::factory()->create()->assignRole('franchisee'))->id,
         'name' => $name, 'address_line1' => '1 Main Road', 'city' => 'Durban', 'province' => 'KwaZulu-Natal',
-        'phone' => '0310000000', 'contact_email' => 'x@example.com', ...$overrides,
+        'phone' => '0310000000', 'contact_email' => 'x@example.com', 'table_count' => 10, 'seat_capacity' => 40, ...$overrides,
     ]);
 }
 
@@ -85,6 +85,8 @@ function newLocationForm(array $overrides = []): array
         'province' => 'Western Cape',
         'phone' => '0210001111',
         'contact_email' => 'waterfront@example.com',
+        'table_count' => 12,
+        'seat_capacity' => 48,
         ...$overrides,
     ];
 }

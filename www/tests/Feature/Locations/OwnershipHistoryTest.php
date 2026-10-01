@@ -19,7 +19,7 @@ function newLocation(?User $owner): Location
 {
     return Location::create([
         'user_id' => $owner?->id, 'name' => 'Vikings Test', 'address_line1' => '1 Main Road',
-        'city' => 'Durban', 'province' => 'KwaZulu-Natal', 'phone' => '0310000000', 'contact_email' => 'x@example.com',
+        'city' => 'Durban', 'province' => 'KwaZulu-Natal', 'phone' => '0310000000', 'contact_email' => 'x@example.com', 'table_count' => 10, 'seat_capacity' => 40,
     ]);
 }
 

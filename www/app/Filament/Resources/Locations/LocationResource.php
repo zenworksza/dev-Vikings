@@ -9,7 +9,6 @@ use App\Filament\Resources\Locations\Pages\ListLocations;
 use App\Filament\Resources\Locations\RelationManagers\OwnershipHistoryRelationManager;
 use App\Filament\Support\BusinessHoursRelationManager;
 use App\Filament\Support\LocationForm;
-use App\Filament\Support\LocationServicesRelationManager;
 use App\Filament\Support\SpecialDaysRelationManager;
 use App\Models\Location;
 use BackedEnum;
@@ -72,7 +71,7 @@ class LocationResource extends Resource
 
     public static function getRelations(): array
     {
-        return [LocationServicesRelationManager::class, BusinessHoursRelationManager::class, SpecialDaysRelationManager::class, OwnershipHistoryRelationManager::class];
+        return [BusinessHoursRelationManager::class, SpecialDaysRelationManager::class, OwnershipHistoryRelationManager::class];
     }
 
     public static function getPages(): array

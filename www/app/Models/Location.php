@@ -17,7 +17,8 @@ use Illuminate\Support\Str;
  * A restaurant location. `user_id` is the franchisee who owns it; a null
  * owner means it is company-owned (run by the franchisor — opened before
  * being sold on, or taken back from a franchisee). New locations are active
- * straight away.
+ * straight away. `table_count` and `seat_capacity` (total pax seated) are the
+ * limits bookings are checked against.
  *
  * @property LocationStatus $status
  * @property User|null $user
@@ -25,7 +26,7 @@ use Illuminate\Support\Str;
 #[Fillable([
     'user_id', 'name', 'slug', 'status', 'description',
     'address_line1', 'address_line2', 'suburb', 'city', 'province', 'postal_code', 'country',
-    'phone', 'contact_email',
+    'phone', 'contact_email', 'table_count', 'seat_capacity',
 ])]
 class Location extends Model
 {
@@ -78,12 +79,6 @@ class Location extends Model
     public function ownershipHistory(): HasMany
     {
         return $this->hasMany(LocationOwnershipHistory::class)->latest('id');
-    }
-
-    /** @return HasMany<LocationService, $this> */
-    public function locationServices(): HasMany
-    {
-        return $this->hasMany(LocationService::class);
     }
 
     /** @return HasMany<LocationBusinessHour, $this> */

@@ -24,7 +24,7 @@ function locationFor(User $owner, string $name): Location
 {
     return Location::create([
         'user_id' => $owner->id, 'name' => $name, 'address_line1' => '1 Main Road', 'city' => 'Durban',
-        'province' => 'KwaZulu-Natal', 'phone' => '0310000000', 'contact_email' => 'x@example.com',
+        'province' => 'KwaZulu-Natal', 'phone' => '0310000000', 'contact_email' => 'x@example.com', 'table_count' => 10, 'seat_capacity' => 40,
     ]);
 }
 
@@ -37,6 +37,8 @@ test('a franchisee can add a location and becomes its owner', function () {
             'province' => 'KwaZulu-Natal',
             'phone' => '0311234567',
             'contact_email' => 'umhlanga@example.com',
+            'table_count' => 10,
+            'seat_capacity' => 40,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
@@ -45,7 +47,21 @@ test('a franchisee can add a location and becomes its owner', function () {
 
     expect($location->user_id)->toBe($this->me->id)
         ->and($location->status)->toBe(LocationStatus::Active)
-        ->and($location->slug)->toBe('vikings-umhlanga-durban');
+        ->and($location->slug)->toBe('vikings-umhlanga-durban')
+        ->and($location->table_count)->toBe(10)
+        ->and($location->seat_capacity)->toBe(40);
+});
+
+test('seating is required and there must be at least one seat per table', function () {
+    Livewire::test(CreateLocation::class)
+        ->fillForm(['table_count' => null, 'seat_capacity' => null])
+        ->call('create')
+        ->assertHasFormErrors(['table_count' => 'required', 'seat_capacity' => 'required']);
+
+    Livewire::test(CreateLocation::class)
+        ->fillForm(['table_count' => 10, 'seat_capacity' => 4])
+        ->call('create')
+        ->assertHasFormErrors(['seat_capacity' => 'gte']);
 });
 
 test('required fields and a valid booking email are enforced', function () {

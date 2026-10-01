@@ -15,7 +15,14 @@
                     </select>
                 </label>
                 <label>Date
-                    <input type="date" name="date" value="{{ $date }}" min="{{ $earliest }}" max="{{ $latest }}" required>
+                    <select name="date" required>
+                        @unless ($date)
+                            <option value="" selected disabled>Choose a date</option>
+                        @endunless
+                        @foreach ($dates as $value => $label)
+                            <option value="{{ $value }}" @selected($value === $date)>{{ $label }}</option>
+                        @endforeach
+                    </select>
                 </label>
                 <button type="submit" class="btn">Show available times</button>
             </div>
@@ -24,14 +31,14 @@
 
         @if ($slots !== null)
             @if (count($slots) === 0)
-                <p class="notice">Sorry, no tables are available for {{ $party }} {{ \Illuminate\Support\Str::plural('guest', $party) }} on {{ \Illuminate\Support\Carbon::parse($date)->format('l j F') }}. Please try another date.</p>
+                <p class="notice">Sorry, no tables are available for {{ $party }} {{ \Illuminate\Support\Str::plural('guest', $party) }} on {{ \Illuminate\Support\Carbon::parse($date)->format(config('site.date_long_format')) }}. Please try another date.</p>
             @else
                 <form method="POST" action="{{ route('bookings.store', $location['slug']) }}" class="form-card">
                     @csrf
                     <input type="hidden" name="party_size" value="{{ $party }}">
                     <input type="hidden" name="date" value="{{ $date }}">
 
-                    <h2 class="h-sm">Available times — {{ \Illuminate\Support\Carbon::parse($date)->format('l j F') }}, {{ $party }} {{ \Illuminate\Support\Str::plural('guest', $party) }}</h2>
+                    <h2 class="h-sm">Available times — {{ \Illuminate\Support\Carbon::parse($date)->format(config('site.date_long_format')) }}, {{ $party }} {{ \Illuminate\Support\Str::plural('guest', $party) }}</h2>
                     <div class="slots" role="radiogroup" aria-label="Time">
                         @foreach ($slots as $slot)
                             <label class="slot"><input type="radio" name="time" value="{{ $slot }}" @checked(old('time') === $slot) required><span>{{ $slot }}</span></label>

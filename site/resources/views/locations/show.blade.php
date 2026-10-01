@@ -41,7 +41,7 @@
                     <h2 class="h-sm">Special days</h2>
                     <dl class="hours">
                         @foreach ($special as $day)
-                            <dt>{{ \Illuminate\Support\Carbon::parse($day['date'])->format('j M Y') }}@if ($day['label']) · {{ $day['label'] }}@endif</dt>
+                            <dt>{{ \Illuminate\Support\Carbon::parse($day['date'])->format(config('site.date_format')) }}@if ($day['label']) · {{ $day['label'] }}@endif</dt>
                             <dd>{{ $day['closed'] ? 'Closed' : $day['opens_at'].' – '.$day['closes_at'] }}</dd>
                         @endforeach
                     </dl>

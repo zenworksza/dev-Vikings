@@ -18,7 +18,7 @@ class BookingRequestedForStaff extends Mailable
 
         return new Envelope(
             replyTo: [$b->customer_email],
-            subject: "New booking request: {$b->party_size} on {$b->starts_at->format('D j M \a\t H:i')} ({$b->customer_name})",
+            subject: "New booking request: {$b->party_size} on {$b->starts_at->format('D d-m-Y \a\t H:i')} ({$b->customer_name})",
         );
     }
 

@@ -29,6 +29,14 @@ return [
     'locations_cache_seconds' => 300,
 
     /*
+    | South African date style is day-month-year. Use these everywhere a date
+    | is shown (never a month-first or spelled-out ambiguous form).
+    */
+    'date_format' => 'd-m-Y',
+    'date_long_format' => 'l d-m-Y',
+    'datetime_format' => 'l d-m-Y, H:i',
+
+    /*
     | Table booking rules. A booking holds its seats for `duration_minutes`;
     | pending and confirmed bookings both count against a location's seats.
     */

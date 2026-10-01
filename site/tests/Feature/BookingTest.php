@@ -95,6 +95,37 @@ class BookingTest extends TestCase
         $this->get('/locations/'.self::SLUG)->assertOk()->assertSee('Book a table')->assertSee($this->bookUrl(), false);
     }
 
+    public function test_dates_are_day_month_year_and_chosen_from_a_dropdown_not_a_browser_date_input(): void
+    {
+        $this->get($this->bookUrl().'?party=2&date='.self::MONDAY)->assertOk()
+            ->assertDontSee('type="date"', false)
+            ->assertSee('Thu 01-10-2026 (today)')
+            ->assertSee('Fri 02-10-2026 (tomorrow)')
+            ->assertSee('<option value="2026-10-12" selected>Mon 12-10-2026</option>', false)
+            ->assertSee('Available times — Monday 12-10-2026')
+            ->assertDontSee('October');
+    }
+
+    public function test_the_booking_window_dropdown_covers_exactly_the_window(): void
+    {
+        $html = $this->get($this->bookUrl())->assertOk()->getContent();
+
+        $this->assertSame(61, substr_count($html, '<option value="20'));
+        $this->assertStringContainsString('value="2026-11-30"', $html); // today + 60
+        $this->assertStringNotContainsString('value="2026-12-01"', $html);
+    }
+
+    public function test_booking_pages_and_emails_use_day_month_year(): void
+    {
+        $this->post($this->bookUrl(), $this->form());
+        $booking = Booking::firstOrFail();
+
+        $this->get(route('bookings.show', $booking))->assertSee('Monday 12-10-2026, 18:00');
+        Mail::assertSent(BookingReceived::class, fn ($m) => str_contains($m->render(), 'Monday 12-10-2026, 18:00'));
+        Mail::assertSent(BookingRequestedForStaff::class, fn ($m) => str_contains($m->render(), 'Monday 12-10-2026, 18:00')
+            && str_contains($m->envelope()->subject, 'Mon 12-10-2026 at 18:00'));
+    }
+
     public function test_the_form_shows_times_within_opening_hours_that_finish_by_closing(): void
     {
         $response = $this->get($this->bookUrl().'?party=4&date='.self::MONDAY)->assertOk();

@@ -5,7 +5,7 @@
         <p class="lead-left">{{ $booking->location_name }}</p>
 
         <div class="location-card">
-            <h2>{{ $booking->party_size }} {{ \Illuminate\Support\Str::plural('guest', $booking->party_size) }} &middot; {{ $booking->starts_at->format('l j F Y, H:i') }}</h2>
+            <h2>{{ $booking->party_size }} {{ \Illuminate\Support\Str::plural('guest', $booking->party_size) }} &middot; {{ $booking->starts_at->format(config('site.datetime_format')) }}</h2>
             <p>{{ $booking->customer_name }} &middot; <a href="tel:{{ preg_replace('/[^\d+]/', '', $booking->customer_phone) }}">{{ $booking->customer_phone }}</a> &middot; <a href="mailto:{{ $booking->customer_email }}">{{ $booking->customer_email }}</a></p>
             @if ($booking->notes)
                 <p class="muted">Notes: {{ $booking->notes }}</p>
@@ -28,7 +28,7 @@
         @else
             <p class="status">
                 @if ($booking->isPending()) This booking time has passed.
-                @else This booking is <strong>{{ $booking->status->value }}</strong>@if ($booking->decided_at) ({{ $booking->decided_at->format('j M, H:i') }})@endif.
+                @else This booking is <strong>{{ $booking->status->value }}</strong>@if ($booking->decided_at) ({{ $booking->decided_at->format('d-m-Y H:i') }})@endif.
                 @endif
             </p>
         @endif

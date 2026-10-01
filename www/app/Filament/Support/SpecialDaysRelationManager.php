@@ -36,7 +36,7 @@ class SpecialDaysRelationManager extends RelationManager
         return $table
             ->defaultSort('date')
             ->columns([
-                TextColumn::make('date')->date('D j M Y')->sortable(),
+                TextColumn::make('date')->date('D d-m-Y')->sortable(),
                 TextColumn::make('label'),
                 TextColumn::make('hours')->state(fn ($record) => $record->isClosed()
                     ? 'Closed'

@@ -170,7 +170,7 @@ h1 {
 }
 
 @media (max-width: 40rem) {
-    .site-header nav a:nth-child(2) {
+    .site-header nav .nav-extra {
         display: none;
     }
 

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Database\Seeders\RoleSeeder;
 use Filament\Actions\Testing\TestAction;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\DatePicker;
 use Livewire\Livewire;
 
 beforeEach(function () {
@@ -53,4 +54,15 @@ test('a franchisee adds a closure', function () {
         ->assertHasNoFormErrors();
 
     expect($this->location->specialDays()->first()->isClosed())->toBeTrue();
+});
+
+test('special days and pickers show dates day-month-year, not US style', function () {
+    $this->location->specialDays()->create(['date' => '2026-12-25', 'label' => 'Christmas']);
+
+    Livewire::test(SpecialDaysRelationManager::class, ['ownerRecord' => $this->location, 'pageClass' => EditLocation::class])
+        ->assertSee('Fri 25-12-2026')
+        ->assertDontSee('Dec 25');
+
+    expect(DatePicker::make('d')->getDisplayFormat())->toBe('d-m-Y')
+        ->and(DatePicker::make('d')->isNative())->toBeFalse();
 });

@@ -2,7 +2,7 @@ New table booking request — {{ $booking->location_name }}
 
 {{ $booking->customer_name }} would like a table for {{ $booking->party_size }}.
 
-When:   {{ $booking->starts_at->format('l j F Y, H:i') }} (until about {{ $booking->ends_at->format('H:i') }})
+When:   {{ $booking->starts_at->format(config('site.datetime_format')) }} (until about {{ $booking->ends_at->format('H:i') }})
 Name:   {{ $booking->customer_name }}
 Phone:  {{ $booking->customer_phone }}
 Email:  {{ $booking->customer_email }}

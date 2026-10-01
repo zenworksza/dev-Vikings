@@ -4,12 +4,12 @@ Hi {{ $booking->customer_name }},
 Good news: your table at {{ $booking->location_name }} is confirmed.
 
 Table for {{ $booking->party_size }}
-{{ $booking->starts_at->format('l j F Y, H:i') }}
+{{ $booking->starts_at->format(config('site.datetime_format')) }}
 
 If your plans change, please cancel here so we can free the table:
 {{ $url }}
 @else
-Unfortunately {{ $booking->location_name }} could not take your booking for {{ $booking->party_size }} on {{ $booking->starts_at->format('l j F Y, H:i') }}.
+Unfortunately {{ $booking->location_name }} could not take your booking for {{ $booking->party_size }} on {{ $booking->starts_at->format(config('site.datetime_format')) }}.
 @if ($booking->decline_reason)
 
 Reason: {{ $booking->decline_reason }}

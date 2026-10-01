@@ -13,7 +13,7 @@
 
         <div class="location-card">
             <h2>{{ $booking->location_name }}</h2>
-            <p>Table for {{ $booking->party_size }} &middot; {{ $booking->starts_at->format('l j F Y, H:i') }}</p>
+            <p>Table for {{ $booking->party_size }} &middot; {{ $booking->starts_at->format(config('site.datetime_format')) }}</p>
 
             @switch($booking->status)
                 @case(BookingStatus::Pending)

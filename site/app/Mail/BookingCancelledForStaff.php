@@ -17,7 +17,7 @@ class BookingCancelledForStaff extends Mailable
         $b = $this->booking;
 
         return new Envelope(
-            subject: "Booking cancelled: {$b->party_size} on {$b->starts_at->format('D j M \a\t H:i')} ({$b->customer_name})",
+            subject: "Booking cancelled: {$b->party_size} on {$b->starts_at->format('D d-m-Y \a\t H:i')} ({$b->customer_name})",
         );
     }
 

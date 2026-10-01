@@ -43,7 +43,7 @@
                     @endif
                     @break
                 @default
-                    <p>Thanks — your application was submitted{{ $this->application->submitted_at ? ' on '.$this->application->submitted_at->format('j F Y') : '' }} and is being reviewed. We will email you as soon as there is an update.</p>
+                    <p>Thanks — your application was submitted{{ $this->application->submitted_at ? ' on '.$this->application->submitted_at->format('d-m-Y') : '' }} and is being reviewed. We will email you as soon as there is an update.</p>
             @endswitch
         </x-filament::section>
     @endif

@@ -40,8 +40,7 @@ class BookingController extends Controller
             'party' => $party,
             'date' => $date?->toDateString(),
             'slots' => $date ? $this->availability->slots($location, $date, $party) : null,
-            'earliest' => today()->toDateString(),
-            'latest' => today()->addDays((int) config('site.booking.max_days_ahead'))->toDateString(),
+            'dates' => $this->bookableDates(),
         ]);
     }
 
@@ -86,6 +85,29 @@ class BookingController extends Controller
         $bookings->cancel($booking);
 
         return redirect()->route('bookings.show', $booking);
+    }
+
+    /**
+     * Every date in the booking window as value (Y-m-d) => label (e.g. "Mon 12-10-2026").
+     * A dropdown, not a date input: browsers show date inputs in the visitor's
+     * own locale, which for many is month-first.
+     *
+     * @return array<string, string>
+     */
+    private function bookableDates(): array
+    {
+        $dates = [];
+
+        foreach (range(0, (int) config('site.booking.max_days_ahead')) as $offset) {
+            $day = today()->addDays($offset);
+            $dates[$day->toDateString()] = $day->format('D d-m-Y').match ($offset) {
+                0 => ' (today)',
+                1 => ' (tomorrow)',
+                default => '',
+            };
+        }
+
+        return $dates;
     }
 
     /** A usable booking date from the query string, or null. */

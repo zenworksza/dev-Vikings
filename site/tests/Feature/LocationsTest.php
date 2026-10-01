@@ -74,7 +74,7 @@ class LocationsTest extends TestCase
             ->assertSee('09:00 – 21:00')
             ->assertSee('Fri – Sun')
             ->assertSee('Closed')
-            ->assertSee('25 Dec 2026')
+            ->assertSee('25-12-2026')
             ->assertSee('Christmas')
             ->assertSee('12 tables')
             ->assertDontSee('<script>x</script>', false);

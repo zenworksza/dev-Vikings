@@ -54,6 +54,11 @@ class MenuTest extends TestCase
         $this->assertStringNotContainsString('Apply as a franchisee', $html);
     }
 
+    public function test_the_stylesheet_url_is_versioned_so_browsers_cannot_serve_a_stale_copy(): void
+    {
+        $this->get('/')->assertSee('css/site.css?v='.filemtime(public_path('css/site.css')), false);
+    }
+
     public function test_the_main_menu_is_home_about_franchise_make_a_booking_contact_in_that_order(): void
     {
         $this->assertSame(['Home', 'About', 'Franchise', 'Make a booking', 'Contact'], array_keys($this->menu('/')));

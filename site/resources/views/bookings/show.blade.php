@@ -18,6 +18,7 @@
             @switch($booking->status)
                 @case(BookingStatus::Pending)
                     <p class="status status-pending">Waiting for the restaurant to confirm. Your seats are held in the meantime.</p>
+                    @include('bookings._not-confirmed')
                     @break
                 @case(BookingStatus::Confirmed)
                     <p class="status status-confirmed">Confirmed. See you then.</p>

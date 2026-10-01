@@ -40,6 +40,8 @@ return [
     | Table booking rules. A booking holds its seats for `duration_minutes`;
     | pending and confirmed bookings both count against a location's seats.
     */
+    'booking_not_confirmed_notice' => 'Booking NOT confirmed unless you get a reply from us. Please verify with us.',
+
     'booking' => [
         'duration_minutes' => 90,
         'slot_step_minutes' => 30,

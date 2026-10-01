@@ -126,6 +126,25 @@ class BookingTest extends TestCase
             && str_contains($m->envelope()->subject, 'Mon 12-10-2026 at 18:00'));
     }
 
+    public function test_customers_are_told_a_booking_is_not_confirmed_until_the_restaurant_replies(): void
+    {
+        $notice = 'Booking NOT confirmed unless you get a reply from us. Please verify with us.';
+
+        // On the form, before any date is chosen and again above the submit button.
+        $this->get($this->bookUrl())->assertSee($notice);
+        $this->assertSame(2, substr_count($this->get($this->bookUrl().'?party=2&date='.self::MONDAY)->getContent(), $notice));
+
+        $this->post($this->bookUrl(), $this->form());
+        $booking = Booking::firstOrFail();
+
+        $this->get(route('bookings.show', $booking))->assertSee($notice);
+        Mail::assertSent(BookingReceived::class, fn ($m) => str_contains($m->render(), $notice));
+
+        // Once confirmed, the warning goes away.
+        $booking->update(['status' => BookingStatus::Confirmed]);
+        $this->get(route('bookings.show', $booking))->assertDontSee($notice);
+    }
+
     public function test_the_form_shows_times_within_opening_hours_that_finish_by_closing(): void
     {
         $response = $this->get($this->bookUrl().'?party=4&date='.self::MONDAY)->assertOk();

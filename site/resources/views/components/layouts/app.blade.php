@@ -12,7 +12,8 @@
     <meta property="og:title" content="{{ $title }}">
     <link rel="icon" href="/favicon.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
-    <link rel="stylesheet" href="{{ asset('css/site.css') }}">
+    {{-- ?v= changes whenever the file does, so browsers never keep a stale stylesheet. --}}
+    <link rel="stylesheet" href="{{ asset('css/site.css') }}?v={{ filemtime(public_path('css/site.css')) }}">
     @stack('head')
 </head>
 <body>
@@ -28,7 +29,7 @@
     @endphp
     <div class="topbar">
         <div class="container">
-            <a href="{{ config('site.portal_url') }}/login" class="btn btn-sm btn-quiet">Franchisee login</a>
+            <a href="{{ config('site.portal_url') }}/login" class="topbar-link">Franchisee login</a>
         </div>
     </div>
 

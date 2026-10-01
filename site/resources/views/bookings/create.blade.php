@@ -29,6 +29,8 @@
             <p class="muted small">For parties larger than {{ $maxParty }}, please call {{ $location['phone'] }}.</p>
         </form>
 
+        @include('bookings._not-confirmed')
+
         @if ($slots !== null)
             @if (count($slots) === 0)
                 <p class="notice">Sorry, no tables are available for {{ $party }} {{ \Illuminate\Support\Str::plural('guest', $party) }} on {{ \Illuminate\Support\Carbon::parse($date)->format(config('site.date_long_format')) }}. Please try another date.</p>
@@ -58,6 +60,8 @@
                     @foreach (['name', 'phone', 'email', 'notes', 'party_size', 'date'] as $field)
                         @error($field) <p class="error">{{ $message }}</p> @enderror
                     @endforeach
+
+                    @include('bookings._not-confirmed')
 
                     {{-- Honeypot: people never see this, bots fill it in. --}}
                     <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>

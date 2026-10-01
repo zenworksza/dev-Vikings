@@ -170,7 +170,7 @@ h1 {
 }
 
 @media (max-width: 40rem) {
-    .site-header nav a:first-child {
+    .site-header nav a:nth-child(2) {
         display: none;
     }
 
@@ -181,4 +181,76 @@ h1 {
     .hero {
         padding: 1rem 0 23rem;
     }
+}
+
+/* Locations */
+.page {
+    padding: 3rem 1rem 5rem;
+}
+
+.lead-left {
+    max-width: 42rem;
+    margin: 1rem 0 2rem;
+    font-size: 1.0625rem;
+    color: var(--ink-muted);
+}
+
+.muted {
+    color: var(--ink-muted);
+}
+
+.location-card {
+    background: var(--surface-alt);
+    border: 1px solid color-mix(in srgb, var(--rule) 40%, transparent);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.location-card h2 {
+    font-size: 1.5rem;
+}
+
+.location-card h2 a {
+    text-decoration: none;
+}
+
+.location-card p {
+    margin: .5rem 0;
+}
+
+.location-card .btn {
+    margin-top: .75rem;
+}
+
+.detail-grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    margin-top: 2rem;
+}
+
+.h-sm {
+    font-size: 1.125rem;
+    margin: 1.5rem 0 .75rem;
+}
+
+.detail-grid > div > .h-sm:first-child {
+    margin-top: 0;
+}
+
+.hours {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: .35rem 1.5rem;
+    margin: 0;
+}
+
+.hours dt {
+    font-weight: 500;
+}
+
+.hours dd {
+    margin: 0;
+    color: var(--ink-muted);
 }

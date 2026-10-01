@@ -19,6 +19,7 @@
         <div class="container header-inner">
             <a href="{{ route('home') }}" class="brand"><img src="{{ asset('images/logo-gold.png') }}" alt="{{ config('site.name') }}"></a>
             <nav>
+                <a href="{{ route('locations.index') }}">Locations</a>
                 <a href="{{ config('site.portal_url') }}/login">Franchisee login</a>
                 <a href="{{ config('site.portal_url') }}/register" class="btn btn-sm">Apply as a franchisee</a>
             </nav>

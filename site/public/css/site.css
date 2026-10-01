@@ -254,3 +254,152 @@ h1 {
     margin: 0;
     color: var(--ink-muted);
 }
+
+
+/* Booking */
+.btn-quiet {
+    background: transparent;
+    border: 1px solid var(--rule);
+    cursor: pointer;
+}
+
+button.btn {
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+button.btn-quiet {
+    border: 1px solid var(--rule);
+}
+
+.small {
+    font-size: .875rem;
+}
+
+.form-card {
+    background: var(--surface-alt);
+    border: 1px solid color-mix(in srgb, var(--rule) 40%, transparent);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.form-card label {
+    display: block;
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+    display: block;
+    width: 100%;
+    margin-top: .35rem;
+    padding: .65rem .75rem;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    font: inherit;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.form-row label {
+    flex: 1 1 10rem;
+}
+
+.form-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    margin-bottom: 1.5rem;
+}
+
+.form-grid .wide {
+    grid-column: 1 / -1;
+}
+
+.slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.slot input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.form-card .slot {
+    display: inline-block;
+}
+
+.slot span {
+    display: inline-block;
+    padding: .55rem 1rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.slot input:checked + span {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.slot input:focus-visible + span {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+}
+
+.notice,
+.status {
+    padding: .85rem 1rem;
+    border-left: 3px solid var(--rule);
+    background: var(--surface-alt);
+    color: var(--ink);
+}
+
+.status-confirmed {
+    border-left-color: #5fa777;
+}
+
+.status-pending {
+    border-left-color: #d9a441;
+}
+
+.status-declined {
+    border-left-color: var(--accent);
+}
+
+.error {
+    margin: .5rem 0;
+    color: #f0a3a5;
+    font-size: .875rem;
+}
+
+.inline-form {
+    margin: 1.5rem 0 0;
+}
+
+/* Honeypot: off-screen, not display:none, so simple bots still fill it in. */
+.hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}

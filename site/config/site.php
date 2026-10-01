@@ -28,4 +28,17 @@ return [
     // How long a fetched location is served without asking the portal again.
     'locations_cache_seconds' => 300,
 
+    /*
+    | Table booking rules. A booking holds its seats for `duration_minutes`;
+    | pending and confirmed bookings both count against a location's seats.
+    */
+    'booking' => [
+        'duration_minutes' => 90,
+        'slot_step_minutes' => 30,
+        'max_days_ahead' => 60,
+        'min_lead_minutes' => 60,
+        // Bigger parties are asked to phone the restaurant.
+        'max_party_size' => 12,
+    ],
+
 ];

@@ -41,7 +41,7 @@ test('the API is closed when no token is configured, even for an empty bearer', 
     $this->getJson('/api/v1/locations')->assertUnauthorized();
 });
 
-test('it lists active locations only, with seating, and no private details', function () {
+test('it lists active locations only, with seating and the booking inbox, but not the owner', function () {
     apiLocation();
     apiLocation(['name' => 'Closed One', 'status' => LocationStatus::Inactive]);
 
@@ -50,9 +50,9 @@ test('it lists active locations only, with seating, and no private details', fun
     expect($response->json('data'))->toHaveCount(1);
     $response->assertJsonPath('data.0.slug', 'vikings-malmesbury-malmesbury')
         ->assertJsonPath('data.0.seating', ['tables' => 12, 'seats' => 48])
-        ->assertJsonMissingPath('data.0.contact_email')
-        ->assertJsonMissingPath('data.0.user_id');
-    expect($response->getContent())->not->toContain('private@example.com');
+        ->assertJsonPath('data.0.booking_email', 'private@example.com')
+        ->assertJsonMissingPath('data.0.user_id')
+        ->assertJsonMissingPath('data.0.contact_email');
 });
 
 test('a location shows weekly hours Monday to Sunday and upcoming special days only', function () {

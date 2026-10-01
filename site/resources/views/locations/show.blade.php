@@ -13,6 +13,8 @@
             <p class="lead-left">{!! nl2br(e($location['description'])) !!}</p>
         @endif
 
+        <p><a href="{{ route('bookings.create', $location['slug']) }}" class="btn">Book a table</a></p>
+
         <div class="detail-grid">
             <div>
                 <h2 class="h-sm">Find us</h2>

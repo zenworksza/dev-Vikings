@@ -44,7 +44,7 @@ class PortalClient
             try {
                 $value = $fetch();
             } catch (Throwable $e) {
-                Log::warning('Portal API request failed', ['key' => $key, 'error' => $e->getMessage()]);
+                Log::error('Portal API request failed', ['key' => $key, 'error' => $e->getMessage()]);
 
                 return Cache::get("{$key}.stale") ?? throw new PortalUnavailable('The portal is unavailable.', 0, $e);
             }

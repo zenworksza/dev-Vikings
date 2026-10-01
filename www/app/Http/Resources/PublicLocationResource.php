@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * What the public site may know about a location. Deliberately leaves out the
- * owner and the booking inbox; add fields here only when the site needs them.
+ * What the public site (never browsers) may know about a location. Leaves out
+ * the owner. `booking_email` is for the site's server to send booking requests
+ * to; the site must not display it. Add fields here only when the site needs them.
  *
  * @mixin Location
  */
@@ -33,6 +34,7 @@ class PublicLocationResource extends JsonResource
                 'full' => $this->fullAddress(),
             ],
             'phone' => $this->phone,
+            'booking_email' => $this->contact_email,
             'seating' => [
                 'tables' => $this->table_count,
                 'seats' => $this->seat_capacity,
